@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="AIOBOT.ProxyGroupItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AIOBOT"
+             mc:Ignorable="d" 
+             d:DesignHeight="35" d:DesignWidth="500"
+             Width="470"
+             Height="30"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" Loaded="UserControl_Loaded" Margin="0,3,0,2">
+    <Grid>
+        <Rectangle Fill="#121221" RadiusX="4" RadiusY="4"/>
+        <Grid VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="55" />
+                <ColumnDefinition Width="75" />
+                <ColumnDefinition Width="155" />
+                <ColumnDefinition Width="105" />
+                <ColumnDefinition Width="75" />
+            </Grid.ColumnDefinitions>
+            <CheckBox x:Name="chkgroupItem" Foreground="White" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock x:Name="group_id_show" Foreground="#dddddd" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock x:Name="group_name_show" Foreground="#dddddd" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock x:Name="group_count_show" Foreground="#dddddd" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button x:Name="group_edit" Style="{StaticResource MaterialDesignFloatingActionButton}" Height="Auto" Width="24" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#DD08FF2A" Click="group_edit_Click" >
+                    <materialDesign:PackIcon Kind="FileEdit" HorizontalAlignment="Center" Width="20" Height="20"/>
+                </Button>
+                <Button x:Name="group_delete" Style="{StaticResource MaterialDesignFloatingActionButton}" Height="24" Width="24" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#ff2323" Visibility="Visible" Click="group_delete_Click">
+                    <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center" Width="20" Height="20"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

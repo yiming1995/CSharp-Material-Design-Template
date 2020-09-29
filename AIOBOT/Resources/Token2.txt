@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Token Generater</title>
+  </head>
+
+  <body>
+    <script src="https://token.ccps.jp/UpcTokenPaymentMini.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
+    <div class="container text-center">
+      <h3 style="margin-top: 30px;">AIOBOTJP Mortar(Token 2)</h3>
+      <br />
+      <div>
+        <p>Token validation time is 30 minutes.</p>
+        <br />
+        <div class="container text-center">
+          <div class="container text-center">
+            <button
+              class="btn btn-sm btn-success"
+              style="margin: 10px; width: 30%;"
+              onclick="getValues()"
+            >
+              Generate Token2
+            </button>
+          </div>
+          <input type="hidden" id="result_token" />
+        </div>
+      </div>
+    </div>
+    <script>
+      function getValues() {
+        var tokens = new Object();
+        window.ipsTokenCb = function (e) {
+          document.getElementById("result_token").value = e.tokenObject.token;
+        };
+        e = {
+          number: "111111",
+          expirationYear: "222222",
+          expirationMonth: "333333",
+          securityCode: "444444",
+          name: "555555",
+        };
+        expMonth = ("00" + String(e.expirationMonth)).slice(-2);
+        expYear = ("00" + String(e.expirationYear)).slice(-2);
+
+        Multipayment.init("103065");
+        var nameArr = e.name
+          .replace(/[^\s\dA-Z]/gi, "")
+          .trim()
+          .slice(0, 50)
+          .split(" ");
+        var firstName = nameArr.shift();
+        var lastName = nameArr.join(" ");
+        ipsParams = {
+          cardno: e.number,
+          securitycode: e.securityCode,
+          expire: expMonth + e.expirationYear,
+          holderfirstname: firstName,
+          holderlastname: lastName || firstName,
+          email: "support@stores.jp",
+          phonenumber: "0354687736",
+        };
+        Multipayment.getMember(ipsParams, "ipsTokenCb");
+      }
+    </script>
+  </body>
+</html>

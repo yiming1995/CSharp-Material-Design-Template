@@ -1,0 +1,1433 @@
+﻿<Window x:Class="AIOBOT.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AIOBOT"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="720" Width="1280"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"        
+        xmlns:controls="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" Background="{x:Null}" AllowsTransparency="True" Foreground="{x:Null}" Loaded="Window_Loaded" KeyDown="Window_KeyDown" MouseDown="Window_MouseDown">
+    <Grid>
+        <Rectangle RadiusX="5" RadiusY="5" Fill="#1E263D"/>
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" Height="35">
+                <StackPanel.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#1F2640" Offset="0"/>
+                        <GradientStop Color="#ff0F1525" Offset="0.99"/>
+                        <GradientStop Color="#ff0F1525" Offset="0.897"/>
+                    </LinearGradientBrush>
+                </StackPanel.Background>
+                <materialDesign:PackIcon Kind="Robot" Foreground="White" Margin="15,7,0,0"/>
+                <Button x:Name="dashboard_show__btn" Style="{DynamicResource MaterialDesignFlatAccentButton}" Width="140"  Foreground="#dddddd" Click="dashboard_show__btn_Click" >
+                    <StackPanel Orientation="Horizontal" >
+                        <materialDesign:PackIcon Kind="DesktopMacDashboard" Margin="0,0,4,0"/>
+                        <TextBlock x:Name="labDashboard" Text="Dashboard" FontFamily="Candara" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="create_task_show_btn" Style="{StaticResource MaterialDesignFlatAccentButton}" Width="140" Foreground="#dddddd" Click="create_task_show_btn_Click" >
+                    <StackPanel Orientation="Horizontal" >
+                        <materialDesign:PackIcon Kind="AddBox" Margin="0,0,4,0"/>
+                        <TextBlock x:Name="labNewTask" Text="New Task" FontFamily="Candara" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="profilepanel_show_btn" Style="{StaticResource MaterialDesignFlatAccentButton}"  Width="140" Foreground="#dddddd" Click="profilepanel_show_btn_Click">
+                    <StackPanel Orientation="Horizontal" >
+                        <materialDesign:PackIcon Kind="TableUser" Margin="0,2,2,0"/>
+                        <TextBlock x:Name="labProfiles" Text="Profiles" FontFamily="Candara" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="btnProxy" Style="{StaticResource MaterialDesignFlatAccentButton}" Foreground="#dddddd"  Width="140" Click="btnProxy_Click">
+                    <StackPanel Orientation="Horizontal" >
+                        <materialDesign:PackIcon Kind="Proxy" Margin="0,0,4,0"/>
+                        <TextBlock x:Name="labProxy" Text="Proxies" FontFamily="Candara" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="btnSetting" Style="{StaticResource MaterialDesignFlatAccentButton}" Foreground="#dddddd"  Width="140" Click="btnSetting_Click" >
+                    <StackPanel Orientation="Horizontal" >
+                        <materialDesign:PackIcon Kind="Settings" Margin="0,0,4,0"/>
+                        <TextBlock x:Name="labeSetting" Text="Setting" FontFamily="Candara" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="btnStatistics" Style="{StaticResource MaterialDesignFlatAccentButton}" Foreground="#dddddd"  Width="140" >
+                    <StackPanel Orientation="Horizontal" >
+                        <materialDesign:PackIcon Kind="StateMachine"  Margin="0,0,4,0"/>
+                        <TextBlock x:Name="labStatistics" Text="Statistics" FontFamily="Candara" />
+                    </StackPanel>
+                </Button>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="260,0,0,0">
+                    <TextBlock x:Name="txtLanguageSetting" Text="EN" Foreground="#dddddd" VerticalAlignment="Center" Width="20" FontSize="13" FontWeight="Bold"/>
+                    <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" Width="40" x:Name="togLanguage" HorizontalAlignment="Left"  Margin="0,5,10,0" Click="togLanguage_Click"/>
+                    <Button x:Name="btnVolumn" Foreground="#dddddd" Style="{StaticResource MaterialDesignToolButton}" Background="{x:Null}" BorderBrush="{x:Null}" Width="25" Height="25" Click="btnVolumn_Click">
+                        <materialDesign:PackIcon x:Name="Window_Volumn_btn" Kind="VolumeHigh" Margin="0,3,0,0"/>
+                    </Button>
+                    <Button Foreground="#00dd00"  x:Name="Window_Min_btn"  Style="{StaticResource MaterialDesignToolButton}" Background="{x:Null}" BorderBrush="{x:Null}" Width="25" Height="25" Click="Window_Min_btn_Click">
+                        <materialDesign:PackIcon Kind="WindowMinimize" Margin="0,3,0,0"/>
+                    </Button>
+                    <Button x:Name="Window_Close_btn" Foreground="#dd0000" Style="{StaticResource MaterialDesignToolButton}" Background="{x:Null}" BorderBrush="{x:Null}" Width="25" Height="25" Click="Window_Close_btn_Click">
+                        <materialDesign:PackIcon Kind="WindowClose" Margin="0,2,0,0"/>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel x:Name="TaskBoard" Orientation="Vertical" Visibility="Visible">
+                <StackPanel Orientation="Horizontal" Margin="0,10,20,0" HorizontalAlignment="Right">
+                    <Grid Width="350" Height="35" Margin="0,0,0,0" >
+                        <Rectangle Fill="#0F1525" RadiusX="15" RadiusY="15"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Text="Valid Captchas:" Foreground="#DDDDDD" VerticalAlignment="Center" Margin="20,0,0,0"/>
+                            <TextBlock x:Name="txttokenCount" Text="0" Foreground="#00DD00" FontSize="18" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                            <Button x:Name="btnHarvestCaptcha" Height="25" BorderBrush="#00DFAB" Foreground="#00DFAB" Background="{x:Null}" Margin="20,0,0,0" Click="btnHarvestCaptcha_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Sack"/>
+                                    <TextBlock Text="Harvest Captcha" Margin="5,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Width="150" Height="35" Margin="20,0,0,0" >
+                        <Rectangle Fill="#0F1525" RadiusX="15" RadiusY="15"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Task Count:" Foreground="#00DEAB" VerticalAlignment="Center" FontSize="16" Margin="20,0,0,0"/>
+                            <TextBlock x:Name="labTaskCount" Foreground="#00DD00" VerticalAlignment="Center" FontSize="18" Margin="10,0,0,0" Text="0"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Width="240" Height="35" Margin="30,0,0,0" >
+                        <Rectangle Fill="#0F1525" RadiusX="15" RadiusY="15"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button x:Name="task_start_all_btn" Style="{StaticResource MaterialDesignFlatAccentButton}" ToolTip="All Start" Click="task_start_all_btn_Click">
+                                <materialDesign:PackIcon Kind="Play" Foreground="#00DEAB"/>
+                            </Button>
+                            <Button x:Name="task_stop_all_btn" Style="{StaticResource MaterialDesignFlatAccentButton}"  ToolTip="All Stop" Click="task_stop_all_btn_Click">
+                                <materialDesign:PackIcon Kind="Stop" Foreground="#00DEAB"/>
+                            </Button>
+                            <Button x:Name="copytask_btn" Style="{StaticResource MaterialDesignFlatAccentButton}" ToolTip="Copy Tasks" Click="copytask_btn_Click">
+                                <materialDesign:PackIcon Kind="ContentCopy" Foreground="#00DEAB"/>
+                            </Button>
+                            <Button x:Name="task_save_btn" Style="{StaticResource MaterialDesignFlatAccentButton}" ToolTip="Save Tasks" Click="task_save_btn_Click">
+                                <materialDesign:PackIcon Kind="ContentSaveEdit" Foreground="#00DEAB"/>
+                            </Button>
+                            <Button x:Name="task_delete_btn" Style="{StaticResource MaterialDesignFlatAccentButton}" ToolTip="Delete Tasks" Click="task_delete_btn_Click">
+                                <materialDesign:PackIcon Kind="Delete" Foreground="#00DEAB"/>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30" HorizontalAlignment="Center" Width="1250" Margin="0,5,0,0">
+                    <Grid Width="50">
+                        <Rectangle RadiusX="3" RadiusY="3" Fill="#0F1525"/>
+                        <materialDesign:PackIcon Kind="CheckboxBlank" Foreground="#dddddd" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                    <Grid Width="70" Margin="4,0,0,0">
+                        <Rectangle RadiusX="3" RadiusY="3" Fill="#0F1525"/>
+                        <TextBlock Text="ID" Foreground="#dddddd" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Candara" FontWeight="Bold"/>
+                    </Grid>
+                    <Grid Width="100" Margin="4,0,0,0">
+                        <Rectangle RadiusX="3" RadiusY="3" Fill="#0F1525"/>
+                        <TextBlock Text="STORE" Foreground="#dddddd" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Candara" FontWeight="Bold"/>
+                    </Grid>
+                    <Grid Width="80" Margin="4,0,0,0">
+                        <Rectangle RadiusX="3" RadiusY="3" Fill="#0F1525"/>
+                        <TextBlock Text="SIZE" Foreground="#dddddd" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Candara" FontWeight="Bold"/>
+                    </Grid>
+                    <Grid Width="80" Margin="4,0,0,0">
+                        <Rectangle RadiusX="3" RadiusY="3" Fill="#0F1525"/>
+                        <TextBlock Text="STYLE" Foreground="#dddddd" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Candara" FontWeight="Bold"/>
+                    </Grid>
+                    <Grid Width="120" Margin="4,0,0,0">
+                        <Rectangle RadiusX="3" RadiusY="3" Fill="#0F1525"/>
+                        <TextBlock Text="PROFILE" Foreground="#dddddd" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Candara" FontWeight="Bold"/>
+                    </Grid>
+                    <Grid Width="150" Margin="4,0,0,0">
+                        <Rectangle RadiusX="3" RadiusY="3" Fill="#0F1525"/>
+                        <TextBlock Text="PROXY" Foreground="#dddddd" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Candara" FontWeight="Bold"/>
+                    </Grid>
+                    <Grid Width="250" Margin="4,0,0,0">
+                        <Rectangle RadiusX="3" RadiusY="3" Fill="#0F1525"/>
+                        <TextBlock Text="PRODUCT" Foreground="#dddddd" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Candara" FontWeight="Bold"/>
+                    </Grid>
+                    <Grid Width="140" Margin="4,0,0,0">
+                        <Rectangle RadiusX="3" RadiusY="3" Fill="#0F1525"/>
+                        <TextBlock Text="STATUS" Foreground="#dddddd" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Candara" FontWeight="Bold"/>
+                    </Grid>
+                    <Grid Width="180" Margin="4,0,0,0">
+                        <Rectangle RadiusX="3" RadiusY="3" Fill="#0F1525"/>
+                        <TextBlock Text="ACTION" Foreground="#dddddd" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Candara" FontWeight="Bold"/>
+                    </Grid>
+                </StackPanel>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Height="520" CanContentScroll="True">
+                    <StackPanel x:Name="taskcontrols_panel" Orientation="Vertical" Margin="0,10,0,0" Height="520">
+                    </StackPanel>
+                </ScrollViewer>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel x:Name="CreateTask_Panel" Margin="0,50,0,0" Visibility="Hidden">
+            <Grid Width="1200" Height="600">
+                <Rectangle Fill="#1B2A49" RadiusX="5" RadiusY="5" Stroke="#121223" StrokeThickness="1"/>
+                <StackPanel Orientation="Vertical">
+                    <Grid Width="1200" Height="40">
+                        <Rectangle Fill="#0F1525"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <materialDesign:PackIcon Kind="CreateNewFolder" Foreground="#dddddddd" VerticalAlignment="Center" Margin="0,0,3,0"/>
+                            <TextBlock Text="Create Task" Foreground="#dddddddd" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontFamily="Candara"/>
+                        </StackPanel>
+                        <TextBlock x:Name="labTaskNotify" Text="Task Created Successfully" Foreground="#0000ff23" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,30,0" FontSize="14" FontWeight="Bold" FontFamily="Candara"/>
+                    </Grid>
+                </StackPanel>
+                <StackPanel x:Name="panel_create_stack" Orientation="Vertical" Margin="0,70,0,0" >
+                    <TextBlock x:Name="labSiteType" Text="Select Site" Foreground="#dddddd" Margin="20,0,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                    <ComboBox x:Name="cmbStore" Width="200" Height="30" Margin="40,10,0,0" Foreground="#dddddd" HorizontalAlignment="Left" SelectedIndex="0" SelectionChanged="cmbStore_SelectionChanged">
+                        <ComboBoxItem>A+S</ComboBoxItem>
+                        <ComboBoxItem>FTC</ComboBoxItem>
+                        <ComboBoxItem>arktz</ComboBoxItem>
+                        <ComboBoxItem>MCT</ComboBoxItem>
+                        <ComboBoxItem>MORTAR</ComboBoxItem>
+                        <ComboBoxItem>ZINGARO</ComboBoxItem>
+                        <ComboBoxItem>ZOZO</ComboBoxItem>
+                        <ComboBoxItem>InstantSB</ComboBoxItem>
+                    </ComboBox>
+                    <Grid>
+                        <StackPanel x:Name="panCreateTaskMCT" Orientation="Horizontal" Visibility="Hidden">
+                            <StackPanel Orientation="Vertical" Margin="30,30,0,0">
+                                <GroupBox>
+                                    <GroupBox.Header>
+                                        <TextBlock Text="Product Information" Foreground="#ffffff" FontSize="14"/>
+                                    </GroupBox.Header>
+                                    <StackPanel Orientation="Vertical">
+                                        <RadioButton x:Name="radURL" Click="radURL_Click" >
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="URL" Margin="10,0,0,0" Width="80" Foreground="White" VerticalAlignment="Center" FontSize="13"/>
+                                                <TextBox x:Name="txtProductURL_MCT" Foreground="#dddddd" FontSize="14" Width="300" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" TextChanged="txtProductURL_MCT_TextChanged"/>
+                                            </StackPanel>
+                                        </RadioButton>
+                                        <RadioButton x:Name="radSKU_MCT" Margin="0,10,0,0" Click="radSKU_MCT_Click">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="SKU Code" Margin="10,0,0,0" Width="80" Foreground="White" VerticalAlignment="Center" FontSize="13"/>
+                                                <TextBox x:Name="txtProductSKU_MCT" Foreground="#dddddd" FontSize="14" Width="300" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" TextChanged="txtProductSKU_MCT_TextChanged"/>
+                                            </StackPanel>
+                                        </RadioButton>
+                                        <RadioButton x:Name="radID_MCT" Margin="0,10,0,0" Click="radID_MCT_Click">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Product ID" Margin="10,0,0,0" Width="80" Foreground="White" VerticalAlignment="Center" FontSize="13"/>
+                                                <TextBox x:Name="txtProductID_MCT" Foreground="#dddddd" FontSize="14" Width="300" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" TextChanged="txtProductID_MCT_TextChanged"/>
+                                            </StackPanel>
+                                        </RadioButton>
+                                        <RadioButton x:Name="radKeyword" Margin="0,10,0,0" Click="radKeyword_Click">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="KeyWord" Margin="10,0,0,0" Width="80" Foreground="White" VerticalAlignment="Center" FontSize="13"/>
+                                                <TextBox x:Name="txtProductKeyword_MCT" Foreground="#dddddd" FontSize="14" Width="300" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" TextChanged="txtProductKeyword_MCT_TextChanged"/>
+                                            </StackPanel>
+                                        </RadioButton>
+                                    </StackPanel>
+                                </GroupBox>
+                                <Button x:Name="btnPreviewProduct_MCT" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="White" FontSize="14" Background="#454556" Width="160" Margin="0,20,0,0" Click="btnPreviewProduct_MCT_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="BookAdd" Margin="0,2,3,0"/>
+                                        <TextBlock x:Name="labProductPreviewMCT" Text="Search Product"/>
+                                    </StackPanel>
+                                </Button>
+                                <Image x:Name="imgProduct_MCT" Width="150" Height="150" Margin="0,20,0,0"/>
+                            </StackPanel>
+                            <GroupBox Margin="30,30,0,0"  Height="205" VerticalAlignment="Top">
+                                <GroupBox.Header>
+                                    <TextBlock Text="Select Property" Foreground="White" FontSize="14"/>
+                                </GroupBox.Header>
+                                <StackPanel Margin="20,0,20,0" VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" Margin="10,10,10,10">
+                                        <TextBlock Text="Auto" Foreground="#DDDDDD"/>
+                                        <ToggleButton x:Name="togVariantMCT" Margin="5,0,5,0" Click="togVariantMCT_Click"/>
+                                        <TextBlock Text="Manually" Foreground="#DDDDDD"/>
+                                    </StackPanel>
+                                    <Grid>
+                                        <StackPanel x:Name="panAutoProperty_MCT" Orientation="Vertical" >
+                                            <TextBlock Text="Select Property" Foreground="#dddddd" FontSize="13"/>
+                                            <ComboBox x:Name="cmbProperty_MCT" Margin="10,10,0,0" Width="220" Foreground="White" SelectionChanged="cmbProperty_MCT_SelectionChanged"/>
+                                        </StackPanel>
+                                        <StackPanel x:Name="panManualProperty_MCT" Orientation="Vertical" Visibility="Hidden">
+                                            <TextBox x:Name="txtColor_MCT" materialDesign:HintAssist.IsFloating="True" materialDesign:HintAssist.Hint="Input Color" Foreground="#dddddd" Margin="5,0,5,0" />
+                                            <TextBox x:Name="txtSize_MCT" materialDesign:HintAssist.IsFloating="True" materialDesign:HintAssist.Hint="Input Size" Foreground="#dddddd" Margin="5"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </GroupBox>
+                            <StackPanel Orientation="Vertical" Margin="40,0,0,0">
+                                <TextBlock x:Name="labSelectProfile_MCT" Text="Select Profile" Foreground="#dddddd" Margin="20,20,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskProfile_MCT" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left"/>
+                                <TextBlock x:Name="labPayment_MCT" Text="Select Payment Method" Foreground="#dddddd" Margin="20,40,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskPayment_MCT" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left" SelectedIndex="0">
+                                    <ComboBoxItem>Cash on Delivery</ComboBoxItem>
+                                </ComboBox>
+                                <TextBlock x:Name="labProxySelect_MCT" Text="Select Proxy" Foreground="#dddddd" Margin="20,40,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskProxy_MCT" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left"/>
+                                <StackPanel Orientation="Horizontal" Margin="50,50,0,120" VerticalAlignment="Bottom">
+                                    <Button x:Name="btnCreateTask_MCT" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="White" FontSize="14" Background="#454556" Width="140" Click="btnCreateTask_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="BookAdd" Margin="0,2,3,0"/>
+                                            <TextBlock x:Name="labCreateTask" Text="Create Task"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="btnCancelTask_MCT" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="White" FontSize="14" Background="#454556" Margin="20,0,0,0" Width="140" Click="btnCancelTask_Click" >
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Cancel" Margin="0,2,3,0"/>
+                                            <TextBlock x:Name="labTaskCancel" Text="Cancel"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+
+                        </StackPanel>
+                        <StackPanel x:Name="panCreateTaskAS" Orientation="Horizontal" Visibility="Visible">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock x:Name="labProductDetailsAS" Text="Product Details" Foreground="#dddddd" Margin="20,20,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <StackPanel Orientation="Vertical" Margin="30,0,0,0">
+                                    <TextBox x:Name="txtProuductSKU" Foreground="#dddddd" FontSize="14" Width="250" HorizontalAlignment="Left" Margin="20,10,0,0" materialDesign:HintAssist.IsFloating="True" TextChanged="txtProuductSKU_TextChanged">
+                                        <materialDesign:HintAssist.Hint>
+                                            <TextBlock x:Name="labProductURLAS" Foreground="#dddddd">SKU CODE</TextBlock>
+                                        </materialDesign:HintAssist.Hint>
+                                    </TextBox>
+                                    <StackPanel Orientation="Horizontal" Margin="20,40,0,0">
+                                        <TextBlock x:Name="labSelectSizeAS" Text="Auto" Foreground="#dddddd" FontSize="16" Margin="0,2,0,0"/>
+                                        <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" Width="40" x:Name="togSizeAS" HorizontalAlignment="Left"  Margin="5,5,10,0" Click="togSizeAS_Click" />
+                                    </StackPanel>
+                                    <Grid>
+                                        <StackPanel x:Name="panAutoSize" Orientation="Horizontal" Visibility="Visible">
+                                            <StackPanel Orientation="Vertical">
+                                                <ComboBox x:Name="cmbSizeArci" Foreground="#dddddd" FontSize="14" Width="200" HorizontalAlignment="Left" Margin="30,10,0,0" materialDesign:HintAssist.IsFloating="True">
+                                                    <materialDesign:HintAssist.Hint>
+                                                        <TextBlock x:Name="labCmbSizeAS" Foreground="#dddddd">Size</TextBlock>
+                                                    </materialDesign:HintAssist.Hint>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
+                                                <Button x:Name="btnConfirmProductArci" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Width="160" Click="btnConfirmProductAS_Click" BorderThickness="1" BorderBrush="{x:Null}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <materialDesign:PackIcon Kind="Search" Margin="0,2,3,0"/>
+                                                        <TextBlock x:Name="labSearchPrductAS" Text="Search Product"/>
+                                                    </StackPanel>
+                                                </Button>
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBox x:Name="txtSizeAS" Foreground="#dddddd" FontSize="14" materialDesign:HintAssist.Hint="Size" Width="200" Visibility="Hidden" materialDesign:HintAssist.IsFloating="True" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Image x:Name="imgProduct" Width="150" Height="150" Margin="0,30,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="40,0,0,0">
+                                <TextBlock x:Name="labSelectProfileAS" Text="Select Profile" Foreground="#dddddd" Margin="20,20,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskProfileArci" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left"/>
+                                <TextBlock x:Name="labPaymentAS" Text="Select Payment Method" Foreground="#dddddd" Margin="20,40,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskPaymentArci" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left" SelectedIndex="0">
+                                    <ComboBoxItem>Credit Card</ComboBoxItem>
+                                    <ComboBoxItem>Cash on Delivery</ComboBoxItem>
+                                </ComboBox>
+                                <TextBlock x:Name="labProxySelectAS" Text="Select Proxy" Foreground="#dddddd" Margin="20,40,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskProxyArci" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="50,0,0,0">
+                                <TextBlock x:Name="labWishComment" Text="If you have any requests regarding your order, please fill in the form below." Foreground="#dddddd" FontSize="14" TextWrapping="Wrap" Width="300" Margin="0,50,0,0"/>
+                                <TextBox x:Name="txtWishArci" Width="300" Height="150" FontSize="13" Foreground="#dddddd" Margin="0,10,0,0" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"/>
+                                <TextBox x:Name="txtCreditToken" Width="300" Margin="0,20,0,0" Height="50" Foreground="#dddddd" FontSize="14" materialDesign:HintAssist.Hint="Input Token of Credit Card" materialDesign:HintAssist.IsFloating="True"/>
+                                <TextBlock Text="(Please use the TokenGenerater.exe)" Foreground="White" Margin="0,5,0,0" HorizontalAlignment="Right"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,50,0,90">
+                                    <Button x:Name="btnCreateTaskArci" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Width="140" Click="btnCreateTaskArci_Click" BorderBrush="{x:Null}" BorderThickness="1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="BookAdd" Margin="0,2,3,0"/>
+                                            <TextBlock x:Name="labCreateTaskAS" Text="Create Task"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="btnCancelTaskArci" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Width="140" BorderBrush="{x:Null}" BorderThickness="1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Cancel" Margin="0,2,3,0"/>
+                                            <TextBlock x:Name="labTaskCancelAS" Text="Cancel"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel x:Name="panCreateTaskFTC" Orientation="Horizontal" Visibility="Hidden">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock x:Name="labProductDetailsFTC" Text="Product Details" Foreground="#dddddd" Margin="20,20,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <StackPanel Orientation="Vertical" Margin="30,0,0,0">
+                                    <TextBox x:Name="txtProuductSKU_FTC" Foreground="#dddddd" FontSize="14" Width="250" HorizontalAlignment="Left" Margin="20,10,0,0" materialDesign:HintAssist.IsFloating="True" TextChanged="txtProuductSKU_TextChanged">
+                                        <materialDesign:HintAssist.Hint>
+                                            <TextBlock x:Name="labProductURLFTC" Foreground="#dddddd">SKU CODE or Product URL</TextBlock>
+                                        </materialDesign:HintAssist.Hint>
+                                    </TextBox>
+                                    <StackPanel Orientation="Horizontal" Margin="20,40,0,0">
+                                        <TextBlock x:Name="labSelectSizeFTC" Text="Auto" Foreground="#dddddd" FontSize="16" Margin="0,2,0,0"/>
+                                        <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" Width="40" x:Name="togSizeFTC" HorizontalAlignment="Left"  Margin="5,5,10,0" Click="togSizeFTC_Click" />
+                                    </StackPanel>
+                                    <Grid>
+                                        <StackPanel x:Name="panAutoSizeFTC" Orientation="Horizontal" Visibility="Visible">
+                                            <StackPanel Orientation="Vertical">
+                                                <ComboBox x:Name="cmbSizeFTC" Foreground="#dddddd" FontSize="14" Width="200" HorizontalAlignment="Left" Margin="30,10,0,0" materialDesign:HintAssist.IsFloating="True">
+                                                    <materialDesign:HintAssist.Hint>
+                                                        <TextBlock x:Name="labCmbSizeFTC" Foreground="#dddddd">Size</TextBlock>
+                                                    </materialDesign:HintAssist.Hint>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
+                                                <Button x:Name="btnConfirmProductFTC" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Width="160" Click="btnConfirmProductFTC_Click" BorderThickness="1" BorderBrush="{x:Null}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <materialDesign:PackIcon Kind="Search" Margin="0,2,3,0"/>
+                                                        <TextBlock x:Name="labSearchPrductFTC" Text="Search Product"/>
+                                                    </StackPanel>
+                                                </Button>
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBox x:Name="txtSizeFTC" Foreground="#dddddd" FontSize="14" materialDesign:HintAssist.Hint="Size" Width="200" Visibility="Hidden" materialDesign:HintAssist.IsFloating="True" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Image x:Name="imgProductFTC" Width="150" Height="150" Margin="0,30,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="40,0,0,0">
+                                <TextBlock x:Name="labSelectProfileFTC" Text="Select Profile" Foreground="#dddddd" Margin="20,20,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskProfileFTC" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left"/>
+                                <TextBlock x:Name="labPaymentFTC" Text="Select Payment Method" Foreground="#dddddd" Margin="20,40,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskPaymentFTC" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left" SelectedIndex="0">
+                                    <ComboBoxItem>Credit Card</ComboBoxItem>
+                                    <ComboBoxItem>Cash on Delivery</ComboBoxItem>
+                                </ComboBox>
+                                <TextBlock x:Name="labProxySelectFTC" Text="Select Proxy" Foreground="#dddddd" Margin="20,40,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskProxyFTC" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="50,0,0,0">
+                                <TextBlock x:Name="labWishCommentFTC" Text="If you have any requests regarding your order, please fill in the form below." Foreground="#dddddd" FontSize="14" TextWrapping="Wrap" Width="300" Margin="0,50,0,0"/>
+                                <TextBox x:Name="txtWishFTC" Width="300" Height="150" FontSize="13" Foreground="#dddddd" Margin="0,10,0,0" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"/>
+                                <TextBox x:Name="txtCreditTokenFTC" Width="300" Margin="0,20,0,0" Height="50" Foreground="#dddddd" FontSize="14" materialDesign:HintAssist.Hint="Input Token of Credit Card" materialDesign:HintAssist.IsFloating="True"/>
+                                <Button x:Name="btnTokenGenerater_FTC" Content="Token Generater" Margin="0,10,0,0" Width="200" HorizontalAlignment="Right" Click="btnTokenGenerater_FTC_Click"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,50,0,90">
+                                    <Button x:Name="btnCreateTaskFTC" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Width="140" Click="btnCreateTaskFTC_Click" BorderBrush="{x:Null}" BorderThickness="1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="BookAdd" Margin="0,2,3,0"/>
+                                            <TextBlock x:Name="labCreateTaskFTC" Text="Create Task"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="btnCancelTaskFTC" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Width="140" BorderBrush="{x:Null}" BorderThickness="1" Click="btnCancelTaskFTC_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Cancel" Margin="0,2,3,0"/>
+                                            <TextBlock x:Name="labTaskCancelFTC" Text="Cancel"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel x:Name="panCreateTaskARK" Orientation="Horizontal" Visibility="Hidden">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock x:Name="labProductDetailsARK" Text="Product Details" Foreground="#dddddd" Margin="20,20,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <StackPanel Orientation="Vertical" Margin="30,0,0,0">
+                                    <TextBox x:Name="txtProuduct_ARK" Foreground="#dddddd" FontSize="14" Width="350" HorizontalAlignment="Left" Margin="20,10,0,0" materialDesign:HintAssist.IsFloating="True" >
+                                        <materialDesign:HintAssist.Hint>
+                                            <TextBlock x:Name="labProductURLARK" Foreground="#dddddd">Product Keyword or Product URL</TextBlock>
+                                        </materialDesign:HintAssist.Hint>
+                                    </TextBox>
+                                    <StackPanel Orientation="Horizontal" Margin="20,40,0,0">
+                                        <TextBlock x:Name="labSelectSizeARK" Text="Auto" Foreground="#dddddd" FontSize="16" Margin="0,2,0,0"/>
+                                        <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" Width="40" x:Name="togSizeARK" HorizontalAlignment="Left"  Margin="5,5,10,0" Click="togSizeARK_Click" />
+                                    </StackPanel>
+                                    <Grid>
+                                        <StackPanel x:Name="panAutoSizeARK" Orientation="Horizontal" Visibility="Visible">
+                                            <StackPanel Orientation="Vertical">
+                                                <ComboBox x:Name="cmbSizeARK" Foreground="#dddddd" FontSize="14" Width="200" HorizontalAlignment="Left" Margin="30,10,0,0" materialDesign:HintAssist.IsFloating="True">
+                                                    <materialDesign:HintAssist.Hint>
+                                                        <TextBlock x:Name="labCmbSizeARK" Foreground="#dddddd">Size</TextBlock>
+                                                    </materialDesign:HintAssist.Hint>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
+                                                <Button x:Name="btnConfirmProductARK" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Width="160" BorderThickness="1" BorderBrush="{x:Null}" Click="btnConfirmProductARK_Click">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <materialDesign:PackIcon Kind="Search" Margin="0,2,3,0"/>
+                                                        <TextBlock x:Name="labSearchPrductARK" Text="Search Product"/>
+                                                    </StackPanel>
+                                                </Button>
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBox x:Name="txtSizeARK" Foreground="#dddddd" FontSize="14" materialDesign:HintAssist.Hint="Size" Width="200" Visibility="Hidden" materialDesign:HintAssist.IsFloating="True" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Image x:Name="imgProductARK" Width="150" Height="150" Margin="0,30,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="40,0,0,0">
+                                <TextBlock x:Name="labSelectProfileARK" Text="Select Profile" Foreground="#dddddd" Margin="20,20,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskProfileARK" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left"/>
+                                <TextBlock x:Name="labPaymentARK" Text="Select Payment Method" Foreground="#dddddd" Margin="20,40,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskPaymentARK" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left" SelectedIndex="0">
+                                    <ComboBoxItem>Credit Card</ComboBoxItem>
+                                    <ComboBoxItem>Cash on Delivery</ComboBoxItem>
+                                </ComboBox>
+                                <TextBlock x:Name="labProxySelectARK" Text="Select Proxy" Foreground="#dddddd" Margin="20,40,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskProxyARK" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="50,0,0,0">
+                                <TextBlock x:Name="labWishCommentARK" Text="If you have any requests regarding your order, please fill in the form below." Foreground="#dddddd" FontSize="14" TextWrapping="Wrap" Width="300" Margin="0,50,0,0"/>
+                                <TextBox x:Name="txtWishARK" Width="300" Height="150" FontSize="13" Foreground="#dddddd" Margin="0,10,0,0" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"/>
+                                <TextBox x:Name="txtCreditTokenARK" Width="300" Margin="0,20,0,0" Height="50" Foreground="#dddddd" FontSize="14" materialDesign:HintAssist.Hint="Input Token of Credit Card" materialDesign:HintAssist.IsFloating="True"/>
+                                <Button x:Name="btnTokenGenerater_ARK" Content="Token Generater" Margin="0,10,0,0" Width="200" HorizontalAlignment="Right" Click="btnTokenGenerater_ARK_Click"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,50,0,90">
+                                    <Button x:Name="btnCreateTaskARK" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Width="140" BorderBrush="{x:Null}" BorderThickness="1" Click="btnCreateTaskARK_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="BookAdd" Margin="0,2,3,0"/>
+                                            <TextBlock x:Name="labCreateTaskARK" Text="Create Task"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="btnCancelTaskARK" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Width="140" BorderBrush="{x:Null}" BorderThickness="1" Click="btnCancelTaskARK_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Cancel" Margin="0,2,3,0"/>
+                                            <TextBlock x:Name="labTaskCancelARK" Text="Cancel"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel x:Name="panCreateTaskMortar" Orientation="Horizontal" Visibility="Hidden">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock x:Name="labProductDetailsMortar" Text="Product Details" Foreground="#dddddd" Margin="20,20,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <StackPanel Orientation="Vertical" Margin="30,0,0,0">
+                                    <TextBox x:Name="txtProductURL_Mortar" Foreground="#dddddd" FontSize="14" Width="400" HorizontalAlignment="Left" Margin="20,10,0,0" materialDesign:HintAssist.IsFloating="True" TextChanged="txtProuductSKU_TextChanged">
+                                        <materialDesign:HintAssist.Hint>
+                                            <TextBlock x:Name="labProductURL_Mortar" Foreground="#dddddd">Product URL</TextBlock>
+                                        </materialDesign:HintAssist.Hint>
+                                    </TextBox>
+                                    <StackPanel Orientation="Horizontal" Margin="20,40,0,0">
+                                        <TextBlock x:Name="labSelectSize_Mortar" Text="Auto" Foreground="#dddddd" FontSize="16" Margin="0,2,0,0"/>
+                                        <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" Width="40" x:Name="togSizeMortar" HorizontalAlignment="Left"  Margin="5,5,10,0" Click="togSizeMortar_Click" />
+                                    </StackPanel>
+                                    <Grid>
+                                        <StackPanel x:Name="panAutoSize_Mortar" Orientation="Horizontal" Visibility="Visible">
+                                            <StackPanel Orientation="Vertical">
+                                                <ComboBox x:Name="cmbSizeMortar" Foreground="#dddddd" FontSize="14" Width="200" HorizontalAlignment="Left" Margin="30,10,0,0" materialDesign:HintAssist.IsFloating="True">
+                                                    <materialDesign:HintAssist.Hint>
+                                                        <TextBlock x:Name="labCmbSizeMortar" Foreground="#dddddd">Size</TextBlock>
+                                                    </materialDesign:HintAssist.Hint>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
+                                                <Button x:Name="btnConfirmProductMortar" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Width="160" BorderThickness="1" BorderBrush="{x:Null}" Click="btnConfirmProductMortar_Click">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <materialDesign:PackIcon Kind="Search" Margin="0,2,3,0"/>
+                                                        <TextBlock x:Name="labSearchPrductMortar" Text="Search Product"/>
+                                                    </StackPanel>
+                                                </Button>
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBox x:Name="txtSizeMortar" Foreground="#dddddd" FontSize="14" materialDesign:HintAssist.Hint="Size" Width="200" Visibility="Hidden" materialDesign:HintAssist.IsFloating="True" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Image x:Name="imgProductMortar" Width="150" Height="150" Margin="0,30,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="40,0,0,0">
+                                <TextBlock x:Name="labSelectProfileMortar" Text="Select Profile" Foreground="#dddddd" Margin="20,20,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskProfileMortar" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left"/>
+                                <TextBlock x:Name="labPaymentMortar" Text="Select Payment Method" Foreground="#dddddd" Margin="20,40,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskPaymentMortar" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left" SelectedIndex="0">
+                                    <ComboBoxItem>Credit Card</ComboBoxItem>
+                                    <!--<ComboBoxItem>Cash on Delivery</ComboBoxItem>-->
+                                </ComboBox>
+                                <TextBlock x:Name="labProxySelectMortar" Text="Select Proxy" Foreground="#dddddd" Margin="20,40,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskProxyMortar" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="50,0,0,0">
+                                <TextBlock x:Name="labWishCommentMortar" Text="If you have any requests regarding your order, please fill in the form below." Foreground="#dddddd" FontSize="14" TextWrapping="Wrap" Width="300" Margin="0,50,0,0"/>
+                                <TextBox x:Name="txtWishMortar" Width="300" Height="50" FontSize="13" Foreground="#dddddd" Margin="0,10,0,0" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"/>
+                                <TextBox x:Name="txtToken1" Width="300" Margin="0,10,0,0" Height="50" Foreground="#dddddd" FontSize="14" materialDesign:HintAssist.Hint="Input Credit Card Token" materialDesign:HintAssist.IsFloating="True"/>
+                                <Button x:Name="btnGenerateToken_Mortar" Width="120" Content="Generate" Margin="5" Background="#00DFAB" Foreground="Black" HorizontalAlignment="Right" Click="btnGenerateToken_Mortar_Click"/>
+                                <TextBox x:Name="txtToken2" Width="300" Margin="0,10,0,0" Height="50" Foreground="#dddddd" FontSize="14" materialDesign:HintAssist.Hint="Input BlackBox Token" materialDesign:HintAssist.IsFloating="True"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,50,0,90">
+                                    <Button x:Name="btnCreateTaskMortar" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Width="140" BorderBrush="{x:Null}" BorderThickness="1" Click="btnCreateTaskMortar_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="BookAdd" Margin="0,2,3,0"/>
+                                            <TextBlock x:Name="labCreateTaskMortar" Text="Create Task"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="btnCancelTaskMortar" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Width="140" BorderBrush="{x:Null}" BorderThickness="1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Cancel" Margin="0,2,3,0"/>
+                                            <TextBlock x:Name="labTaskCancelMortar" Text="Cancel"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel x:Name="panCreateTaskZoZo" Orientation="Horizontal" Visibility="Hidden">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock x:Name="labProductDetailsZozo" Text="Product Details" Foreground="#dddddd" Margin="20,20,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <StackPanel Orientation="Vertical" Margin="30,0,0,0">
+                                    <TextBox x:Name="txtProductURL_Zozo" Foreground="#dddddd" FontSize="14" Width="550" HorizontalAlignment="Left" Margin="20,10,0,0" materialDesign:HintAssist.IsFloating="True" TextChanged="txtProuductSKU_TextChanged">
+                                        <materialDesign:HintAssist.Hint>
+                                            <TextBlock x:Name="labProductURL_Zozo" Foreground="#dddddd">Product URL</TextBlock>
+                                        </materialDesign:HintAssist.Hint>
+                                    </TextBox>
+                                    <StackPanel Orientation="Horizontal" Margin="20,40,0,0">
+                                        <TextBlock x:Name="labSelectSize_Zozo" Text="Auto" Foreground="#dddddd" FontSize="16" Margin="0,2,0,0"/>
+                                        <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" Width="40" x:Name="togSizeZozo" HorizontalAlignment="Left"  Margin="5,5,10,0" Click="togSizeZozo_Click" />
+                                    </StackPanel>
+                                    <Grid>
+                                        <StackPanel x:Name="panAutoSize_Zozo" Orientation="Horizontal" Visibility="Visible">
+                                            <StackPanel Orientation="Vertical">
+                                                <ComboBox x:Name="cmbSizeZozo" Foreground="#dddddd" FontSize="14" Width="200" HorizontalAlignment="Left" Margin="30,10,0,0" materialDesign:HintAssist.IsFloating="True">
+                                                    <materialDesign:HintAssist.Hint>
+                                                        <TextBlock x:Name="labCmbSizeZozo" Foreground="#dddddd">Size</TextBlock>
+                                                    </materialDesign:HintAssist.Hint>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
+                                                <Button x:Name="btnConfirmProductZozo" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Width="160" BorderThickness="1" BorderBrush="{x:Null}" Click="btnConfirmProductZozo_Click">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <materialDesign:PackIcon Kind="Search" Margin="0,2,3,0"/>
+                                                        <TextBlock x:Name="labSearchPrductZozo" Text="Search Product"/>
+                                                    </StackPanel>
+                                                </Button>
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBox x:Name="txtSizeZozo" Foreground="#dddddd" FontSize="14" materialDesign:HintAssist.Hint="Size" Width="200" Visibility="Hidden" materialDesign:HintAssist.IsFloating="True" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Image x:Name="imgProductZozo" Width="150" Height="150" Margin="0,30,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="40,0,0,0">
+                                <TextBlock x:Name="labEmailZozo" Text="Email Address" Foreground="#dddddd" Margin="20,40,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <TextBox x:Name="txtEmailZozo" Foreground="#dddddd" Width="200" HorizontalAlignment="Left" Margin="40,10,0,0"/>
+                                <TextBlock x:Name="labPaymentZozo" Text="Select Payment Method" Foreground="#dddddd" Margin="20,40,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskPaymentZozo" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left" SelectedIndex="0">
+                                    <ComboBoxItem>Credit Card</ComboBoxItem>
+                                    <ComboBoxItem>Cash on Delivery</ComboBoxItem>
+                                </ComboBox>
+                                <TextBlock x:Name="labProxySelectZozo" Text="Select Proxy" Foreground="#dddddd" Margin="20,40,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskProxyZozo" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left"/>
+                                <StackPanel Orientation="Horizontal" Margin="150,50,0,90">
+                                    <Button x:Name="btnCreateTaskZozo" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Width="140" BorderBrush="{x:Null}" BorderThickness="1" Click="btnCreateTaskZozo_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="BookAdd" Margin="0,2,3,0"/>
+                                            <TextBlock x:Name="labCreateTaskZozo" Text="Create Task"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="btnCancelTaskZozo" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Width="140" BorderBrush="{x:Null}" BorderThickness="1" Click="btnCancelTaskZozo_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Cancel" Margin="0,2,3,0"/>
+                                            <TextBlock x:Name="labTaskCancelZozo" Text="Cancel"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel x:Name="panCreateTaskISB" Orientation="Horizontal" Visibility="Hidden">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock x:Name="labProductDetailsISB" Text="Product Details" Foreground="#dddddd" Margin="20,20,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <StackPanel Orientation="Vertical" Margin="30,0,0,0">
+                                    <TextBox x:Name="txtProduct_ISB" Foreground="#dddddd" FontSize="14" Width="350" HorizontalAlignment="Left" Margin="20,10,0,0" materialDesign:HintAssist.IsFloating="True" >
+                                        <materialDesign:HintAssist.Hint>
+                                            <TextBlock x:Name="labProductURLISB" Foreground="#dddddd">Product Keyword or Product URL</TextBlock>
+                                        </materialDesign:HintAssist.Hint>
+                                    </TextBox>
+                                    <StackPanel Orientation="Horizontal" Margin="20,40,0,0">
+                                        <TextBlock x:Name="labSelectSizeISB" Text="Auto" Foreground="#dddddd" FontSize="16" Margin="0,2,0,0"/>
+                                        <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" Width="40" x:Name="togSizeISB" HorizontalAlignment="Left"  Margin="5,5,10,0" Click="togSizeISB_Click" />
+                                    </StackPanel>
+                                    <Grid>
+                                        <StackPanel x:Name="panAutoSizeISB" Orientation="Horizontal" Visibility="Visible">
+                                            <StackPanel Orientation="Vertical">
+                                                <ComboBox x:Name="cmbSizeISB" Foreground="#dddddd" FontSize="14" Width="200" HorizontalAlignment="Left" Margin="30,10,0,0" materialDesign:HintAssist.IsFloating="True">
+                                                    <materialDesign:HintAssist.Hint>
+                                                        <TextBlock x:Name="labCmbSizeISB" Foreground="#dddddd">Size</TextBlock>
+                                                    </materialDesign:HintAssist.Hint>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
+                                                <Button x:Name="btnConfirmProductISB" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Width="160" BorderThickness="1" BorderBrush="{x:Null}" Click="btnConfirmProductISB_Click">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <materialDesign:PackIcon Kind="Search" Margin="0,2,3,0"/>
+                                                        <TextBlock x:Name="labSearchPrductISB" Text="Search Product"/>
+                                                    </StackPanel>
+                                                </Button>
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBox x:Name="txtSizeISB" Foreground="#dddddd" FontSize="14" materialDesign:HintAssist.Hint="Size" Width="200" Visibility="Hidden" materialDesign:HintAssist.IsFloating="True" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Image x:Name="imgProductISB" Width="150" Height="150" Margin="0,30,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="40,0,0,0">
+                                <TextBlock x:Name="labSelectProfileISB" Text="Select Profile" Foreground="#dddddd" Margin="20,20,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskProfileISB" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left"/>
+                                <TextBlock x:Name="labPaymentISB" Text="Select Payment Method" Foreground="#dddddd" Margin="20,40,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskPaymentISB" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left" SelectedIndex="0">
+                                    <ComboBoxItem>Credit Card</ComboBoxItem>
+                                    <ComboBoxItem>Cash on Delivery</ComboBoxItem>
+                                </ComboBox>
+                                <TextBlock x:Name="labProxySelectISB" Text="Select Proxy" Foreground="#dddddd" Margin="20,40,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskProxyISB" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="50,0,0,0">
+                                <TextBlock x:Name="labWishCommentISB" Text="If you have any requests regarding your order, please fill in the form below." Foreground="#dddddd" FontSize="14" TextWrapping="Wrap" Width="300" Margin="0,50,0,0"/>
+                                <TextBox x:Name="txtWishISB" Width="300" Height="150" FontSize="13" Foreground="#dddddd" Margin="0,10,0,0" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"/>
+                                <TextBox x:Name="txtCreditTokenISB" Width="300" Margin="0,20,0,0" Height="50" Foreground="#dddddd" FontSize="14" materialDesign:HintAssist.Hint="Input Token of Credit Card" materialDesign:HintAssist.IsFloating="True"/>
+                                <Button x:Name="btnTokenGenerater_ISB" Content="Token Generater" Margin="0,10,0,0" Width="200" HorizontalAlignment="Right"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,50,0,90">
+                                    <Button x:Name="btnCreateTaskISB" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Width="140" BorderBrush="{x:Null}" BorderThickness="1" Click="btnCreateTaskISB_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="BookAdd" Margin="0,2,3,0"/>
+                                            <TextBlock x:Name="labCreateTaskISB" Text="Create Task"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="btnCancelTaskISB" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Width="140" BorderBrush="{x:Null}" BorderThickness="1" Click="btnCancelTaskISB_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Cancel" Margin="0,2,3,0"/>
+                                            <TextBlock x:Name="labTaskCancelISB" Text="Cancel"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel x:Name="panCreateTaskZingaro" Orientation="Horizontal" Visibility="Hidden">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock x:Name="labProductDetailsZingaro" Text="Product Details" Foreground="#dddddd" Margin="20,20,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <StackPanel Orientation="Vertical" Margin="30,0,0,0">
+                                    <TextBox x:Name="txtProuduct_Zingaro" Foreground="#dddddd" FontSize="14" Width="350" HorizontalAlignment="Left" Margin="20,10,0,0" materialDesign:HintAssist.IsFloating="True" >
+                                        <materialDesign:HintAssist.Hint>
+                                            <TextBlock x:Name="labProductURLZingaro" Foreground="#dddddd">Product Keyword or Product URL</TextBlock>
+                                        </materialDesign:HintAssist.Hint>
+                                    </TextBox>
+                                    <TextBox x:Name="txtSizeZingaro" Foreground="#dddddd" FontSize="14" Width="250" HorizontalAlignment="Left" Margin="20,10,0,0" materialDesign:HintAssist.IsFloating="True" >
+                                        <materialDesign:HintAssist.Hint>
+                                            <TextBlock Foreground="#dddddd">Size(Eg: M, L, ...)</TextBlock>
+                                        </materialDesign:HintAssist.Hint>
+                                    </TextBox>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="40,0,0,0">
+                                <TextBlock x:Name="labSelectProfileZingaro" Text="Select Profile" Foreground="#dddddd" Margin="20,20,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskProfileZingaro" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left"/>
+                                <TextBlock x:Name="labPaymentZingaro" Text="Select Payment Method" Foreground="#dddddd" Margin="20,40,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskPaymentZingaro" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left" SelectedIndex="0">
+                                    <ComboBoxItem>Credit Card</ComboBoxItem>
+                                    <!--<ComboBoxItem>Cash on Delivery</ComboBoxItem>-->
+                                </ComboBox>
+                                <TextBlock x:Name="labProxySelectZingaro" Text="Select Proxy" Foreground="#dddddd" Margin="20,40,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                                <ComboBox x:Name="cmbTaskProxyZingaro" Width="200" Height="30" Margin="40,20,0,0" Foreground="#dddddd" HorizontalAlignment="Left"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="50,0,0,0">
+                                <TextBlock x:Name="labWishCommentZingaro" Text="If you have any requests regarding your order, please fill in the form below." Foreground="#dddddd" FontSize="14" TextWrapping="Wrap" Width="300" Margin="0,50,0,0"/>
+                                <TextBox x:Name="txtWishZingaro" Width="300" Height="150" FontSize="13" Foreground="#dddddd" Margin="0,10,0,0" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"/>
+                                <!--<TextBox x:Name="txtCreditTokenZingaro" Width="300" Margin="0,20,0,0" Height="50" Foreground="#dddddd" FontSize="14" materialDesign:HintAssist.Hint="Input Token of Credit Card" materialDesign:HintAssist.IsFloating="True"/>-->
+                                <!--<Button x:Name="btnTokenGenerater_Zingaro" Content="Token Generater" Margin="0,10,0,0" Width="200" HorizontalAlignment="Right" Click="btnTokenGenerater_Zingaro_Click"/>-->
+                                <StackPanel Orientation="Horizontal" Margin="0,50,0,90">
+                                    <Button x:Name="btnCreateTaskZingaro" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Width="140" BorderBrush="{x:Null}" BorderThickness="1" Click="btnCreateTaskZingaro_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="BookAdd" Margin="0,2,3,0"/>
+                                            <TextBlock x:Name="labCreateTaskZingaro" Text="Create Task"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="btnCancelTaskZingaro" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Width="140" BorderBrush="{x:Null}" BorderThickness="1" Click="btnCancelTaskZingaro_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Cancel" Margin="0,2,3,0"/>
+                                            <TextBlock x:Name="labTaskCancelZingaro" Text="Cancel"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+        <StackPanel x:Name="Profile_panel" Margin="0,50,0,0" Visibility="Hidden">
+            <Grid Width="1200" Height="640">
+                <Rectangle Fill="#1B2A49" RadiusX="5" RadiusY="5" Stroke="#121223" StrokeThickness="1"/>
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical">
+                        <Grid Width="1200" Height="40">
+                            <Rectangle Fill="#0F1525"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <materialDesign:PackIcon Kind="FaceProfile" Foreground="#99dddddd" VerticalAlignment="Center" Margin="0,0,3,0"/>
+                                <TextBlock Text="Profile Editor" Foreground="#99dddddd" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontFamily="Candara"/>
+                            </StackPanel>
+                            <TextBlock x:Name="labProfileNotify" Text="Profile Created Successfully" Foreground="#0000ff23" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,30,0" FontSize="14" FontWeight="Bold" FontFamily="Candara"/>
+                        </Grid>
+                        <StackPanel Orientation="Vertical"  Margin="20,20,0,0">
+                            <TextBlock x:Name="labSiteType_Profile" Text="Select Site" Foreground="#dddddd" Margin="20,0,0,0" FontSize="15" FontFamily="Candara" FontWeight="Bold"/>
+                            <ComboBox x:Name="cmbStore_Profile" Width="200" Height="30" Margin="40,10,0,0" Foreground="#dddddd" HorizontalAlignment="Left" SelectedIndex="0" SelectionChanged="cmbStore_Profile_SelectionChanged">
+                                <ComboBoxItem>A+S</ComboBoxItem>
+                                <ComboBoxItem>FTC</ComboBoxItem>
+                                <ComboBoxItem>arktz</ComboBoxItem>
+                                <ComboBoxItem>MCT</ComboBoxItem>
+                                <ComboBoxItem>MORTAR</ComboBoxItem>
+                                <ComboBoxItem>ZINGARO</ComboBoxItem>
+                            </ComboBox>
+                        </StackPanel>
+                        <Grid Margin="20,10,0,0" HorizontalAlignment="Center">
+                            <StackPanel x:Name="panCreateAccount_AS" Orientation="Horizontal" Margin="20,0,0,0" Visibility="Visible">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="AS Profile Creater" Foreground="#dddddd" FontSize="16" Margin="0,10,0,0"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox x:Name="txtLoginID" materialDesign:HintAssist.Hint="Email" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" TextChanged="txtLoginID_TextChanged"/>
+                                        <TextBox x:Name="txtPassword" materialDesign:HintAssist.Hint="Password" Foreground="#dddddd" FontSize="14" Width="200" Margin="20,0,0,0" materialDesign:HintAssist.IsFloating="True" TextChanged="txtPassword_TextChanged"/>
+                                    </StackPanel>
+                                    <ComboBox x:Name="cmbProfileCardType" materialDesign:HintAssist.Hint="CardType" materialDesign:HintAssist.IsFloating="True"  Foreground="#dddddd" FontSize="14" Margin="0,20,0,0" Width="200"  HorizontalAlignment="Left">
+                                        <ComboBoxItem>VISA</ComboBoxItem>
+                                        <ComboBoxItem>MasterCard</ComboBoxItem>
+                                        <ComboBoxItem>JCB</ComboBoxItem>
+                                        <ComboBoxItem>American Express</ComboBoxItem>
+                                    </ComboBox>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox x:Name="txtCardNumber" materialDesign:HintAssist.Hint="Card Number" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0"/>
+                                        <TextBox x:Name="txtCardName" materialDesign:HintAssist.Hint="Card Name" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="20,20,0,0"/>
+                                    </StackPanel>
+                                    <TextBox x:Name="txtCardSecurity" materialDesign:HintAssist.Hint="Security Code" Foreground="#dddddd" FontSize="14" Width="100" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <ComboBox x:Name="cmbCardMonth" materialDesign:HintAssist.Hint="Expire Month" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0">
+                                            <ComboBoxItem>01</ComboBoxItem>
+                                            <ComboBoxItem>02</ComboBoxItem>
+                                            <ComboBoxItem>03</ComboBoxItem>
+                                            <ComboBoxItem>04</ComboBoxItem>
+                                            <ComboBoxItem>05</ComboBoxItem>
+                                            <ComboBoxItem>06</ComboBoxItem>
+                                            <ComboBoxItem>07</ComboBoxItem>
+                                            <ComboBoxItem>08</ComboBoxItem>
+                                            <ComboBoxItem>09</ComboBoxItem>
+                                            <ComboBoxItem>10</ComboBoxItem>
+                                            <ComboBoxItem>11</ComboBoxItem>
+                                            <ComboBoxItem>12</ComboBoxItem>
+                                        </ComboBox>
+                                        <ComboBox x:Name="cmbCardYear" materialDesign:HintAssist.Hint="Expire Year" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="20,20,0,0">
+                                            <ComboBoxItem>2020</ComboBoxItem>
+                                            <ComboBoxItem>2021</ComboBoxItem>
+                                            <ComboBoxItem>2022</ComboBoxItem>
+                                            <ComboBoxItem>2023</ComboBoxItem>
+                                            <ComboBoxItem>2024</ComboBoxItem>
+                                            <ComboBoxItem>2025</ComboBoxItem>
+                                            <ComboBoxItem>2026</ComboBoxItem>
+                                            <ComboBoxItem>2027</ComboBoxItem>
+                                            <ComboBoxItem>2028</ComboBoxItem>
+                                            <ComboBoxItem>2029</ComboBoxItem>
+                                            <ComboBoxItem>2030</ComboBoxItem>
+                                            <ComboBoxItem>2031</ComboBoxItem>
+                                            <ComboBoxItem>2032</ComboBoxItem>
+                                            <ComboBoxItem>2033</ComboBoxItem>
+                                        </ComboBox>
+                                    </StackPanel>
+                                    <TextBox x:Name="txtProfileName" materialDesign:HintAssist.Hint="Profile Name" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0"/>
+                                    <ComboBox x:Name="cmbProfileName" materialDesign:HintAssist.Hint="Profile List" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0" SelectionChanged="cmbProfileName_SelectionChanged"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                                    <Button x:Name="btnImportProfile" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Height="35" BorderBrush="{x:Null}" BorderThickness="1" Click="btnImportProfile_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Import" Margin="0,2,3,0"/>
+                                            <TextBlock Text="Import Profile"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="btnCreateProfile" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Click="btnCreateProfile_Click" BorderBrush="{x:Null}" BorderThickness="1" Margin="20,0,0,0"  Height="35">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="AccountsAdd" Margin="0,2,3,0"/>
+                                            <TextBlock Text="Create Profile"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="btnDeleteProfile" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Height="35" Click="btnDeleteProfile_Click" BorderBrush="{x:Null}" BorderThickness="1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Delete" Margin="0,2,3,0"/>
+                                            <TextBlock Text="Delete Profile"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel x:Name="panCreateAccount_FTC" Orientation="Horizontal" Margin="20,0,0,0" Visibility="Hidden">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="FTC Profile Creater" Foreground="#dddddd" FontSize="16" Margin="0,10,0,0"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox x:Name="txtLoginID_FTC" materialDesign:HintAssist.Hint="Email" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" TextChanged="txtLoginID_TextChanged"/>
+                                        <TextBox x:Name="txtPassword_FTC" materialDesign:HintAssist.Hint="Password" Foreground="#dddddd" FontSize="14" Width="200" Margin="20,0,0,0" materialDesign:HintAssist.IsFloating="True" TextChanged="txtPassword_TextChanged"/>
+                                    </StackPanel>
+                                    <ComboBox x:Name="cmbProfileCardType_FTC" materialDesign:HintAssist.Hint="CardType" materialDesign:HintAssist.IsFloating="True"  Foreground="#dddddd" FontSize="14" Margin="0,20,0,0" Width="200"  HorizontalAlignment="Left">
+                                        <ComboBoxItem>VISA</ComboBoxItem>
+                                        <ComboBoxItem>MasterCard</ComboBoxItem>
+                                        <ComboBoxItem>JCB</ComboBoxItem>
+                                        <ComboBoxItem>American Express</ComboBoxItem>
+                                    </ComboBox>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox x:Name="txtCardNumber_FTC" materialDesign:HintAssist.Hint="Card Number" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0"/>
+                                        <TextBox x:Name="txtCardName_FTC" materialDesign:HintAssist.Hint="Card Name" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="20,20,0,0"/>
+                                    </StackPanel>
+                                    <TextBox x:Name="txtCardSecurity_FTC" materialDesign:HintAssist.Hint="Security Code" Foreground="#dddddd" FontSize="14" Width="100" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <ComboBox x:Name="cmbCardMonth_FTC" materialDesign:HintAssist.Hint="Expire Month" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0">
+                                            <ComboBoxItem>01</ComboBoxItem>
+                                            <ComboBoxItem>02</ComboBoxItem>
+                                            <ComboBoxItem>03</ComboBoxItem>
+                                            <ComboBoxItem>04</ComboBoxItem>
+                                            <ComboBoxItem>05</ComboBoxItem>
+                                            <ComboBoxItem>06</ComboBoxItem>
+                                            <ComboBoxItem>07</ComboBoxItem>
+                                            <ComboBoxItem>08</ComboBoxItem>
+                                            <ComboBoxItem>09</ComboBoxItem>
+                                            <ComboBoxItem>10</ComboBoxItem>
+                                            <ComboBoxItem>11</ComboBoxItem>
+                                            <ComboBoxItem>12</ComboBoxItem>
+                                        </ComboBox>
+                                        <ComboBox x:Name="cmbCardYear_FTC" materialDesign:HintAssist.Hint="Expire Year" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="20,20,0,0">
+                                            <ComboBoxItem>2020</ComboBoxItem>
+                                            <ComboBoxItem>2021</ComboBoxItem>
+                                            <ComboBoxItem>2022</ComboBoxItem>
+                                            <ComboBoxItem>2023</ComboBoxItem>
+                                            <ComboBoxItem>2024</ComboBoxItem>
+                                            <ComboBoxItem>2025</ComboBoxItem>
+                                            <ComboBoxItem>2026</ComboBoxItem>
+                                            <ComboBoxItem>2027</ComboBoxItem>
+                                            <ComboBoxItem>2028</ComboBoxItem>
+                                            <ComboBoxItem>2029</ComboBoxItem>
+                                            <ComboBoxItem>2030</ComboBoxItem>
+                                            <ComboBoxItem>2031</ComboBoxItem>
+                                            <ComboBoxItem>2032</ComboBoxItem>
+                                            <ComboBoxItem>2033</ComboBoxItem>
+                                        </ComboBox>
+                                    </StackPanel>
+                                    <TextBox x:Name="txtProfileName_FTC" materialDesign:HintAssist.Hint="Profile Name" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0"/>
+                                    <ComboBox x:Name="cmbProfileName_FTC" materialDesign:HintAssist.Hint="Profile List" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0" SelectionChanged="cmbProfileName_FTC_SelectionChanged"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                                    <Button x:Name="btnImportProfile_FTC" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Height="35" BorderBrush="{x:Null}" BorderThickness="1" Click="btnImportProfile_FTC_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Import" Margin="0,2,3,0"/>
+                                            <TextBlock Text="Import Profile"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="btnCreateProfile_FTC" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Click="btnCreateProfile_FTC_Click" BorderBrush="{x:Null}" BorderThickness="1" Margin="20,0,0,0"  Height="35">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="AccountsAdd" Margin="0,2,3,0"/>
+                                            <TextBlock Text="Create Profile"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="btnDeleteProfile_FTC" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Height="35" Click="btnDeleteProfile_FTC_Click" BorderBrush="{x:Null}" BorderThickness="1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Delete" Margin="0,2,3,0"/>
+                                            <TextBlock Text="Delete Profile"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel x:Name="panCreateAccount_ARK" Orientation="Horizontal" Margin="20,0,0,0" Visibility="Hidden">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="arktz Profile Creater" Foreground="#dddddd" FontSize="16" Margin="0,10,0,0"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox x:Name="txtLoginID_ARK" materialDesign:HintAssist.Hint="Email" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True"/>
+                                        <TextBox x:Name="txtPassword_ARK" materialDesign:HintAssist.Hint="Password" Foreground="#dddddd" FontSize="14" Width="200" Margin="20,0,0,0" materialDesign:HintAssist.IsFloating="True"/>
+                                    </StackPanel>
+                                    <ComboBox x:Name="cmbProfileCardType_ARK" materialDesign:HintAssist.Hint="CardType" materialDesign:HintAssist.IsFloating="True"  Foreground="#dddddd" FontSize="14" Margin="0,20,0,0" Width="200"  HorizontalAlignment="Left">
+                                        <ComboBoxItem>VISA</ComboBoxItem>
+                                        <ComboBoxItem>MasterCard</ComboBoxItem>
+                                        <ComboBoxItem>JCB</ComboBoxItem>
+                                        <ComboBoxItem>American Express</ComboBoxItem>
+                                    </ComboBox>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox x:Name="txtCardNumber_ARK" materialDesign:HintAssist.Hint="Card Number" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0"/>
+                                        <TextBox x:Name="txtCardName_ARK" materialDesign:HintAssist.Hint="Card Name" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="20,20,0,0"/>
+                                    </StackPanel>
+                                    <TextBox x:Name="txtCardSecurity_ARK" materialDesign:HintAssist.Hint="Security Code" Foreground="#dddddd" FontSize="14" Width="100" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <ComboBox x:Name="cmbCardMonth_ARK" materialDesign:HintAssist.Hint="Expire Month" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0">
+                                            <ComboBoxItem>01</ComboBoxItem>
+                                            <ComboBoxItem>02</ComboBoxItem>
+                                            <ComboBoxItem>03</ComboBoxItem>
+                                            <ComboBoxItem>04</ComboBoxItem>
+                                            <ComboBoxItem>05</ComboBoxItem>
+                                            <ComboBoxItem>06</ComboBoxItem>
+                                            <ComboBoxItem>07</ComboBoxItem>
+                                            <ComboBoxItem>08</ComboBoxItem>
+                                            <ComboBoxItem>09</ComboBoxItem>
+                                            <ComboBoxItem>10</ComboBoxItem>
+                                            <ComboBoxItem>11</ComboBoxItem>
+                                            <ComboBoxItem>12</ComboBoxItem>
+                                        </ComboBox>
+                                        <ComboBox x:Name="cmbCardYear_ARK" materialDesign:HintAssist.Hint="Expire Year" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="20,20,0,0">
+                                            <ComboBoxItem>2020</ComboBoxItem>
+                                            <ComboBoxItem>2021</ComboBoxItem>
+                                            <ComboBoxItem>2022</ComboBoxItem>
+                                            <ComboBoxItem>2023</ComboBoxItem>
+                                            <ComboBoxItem>2024</ComboBoxItem>
+                                            <ComboBoxItem>2025</ComboBoxItem>
+                                            <ComboBoxItem>2026</ComboBoxItem>
+                                            <ComboBoxItem>2027</ComboBoxItem>
+                                            <ComboBoxItem>2028</ComboBoxItem>
+                                            <ComboBoxItem>2029</ComboBoxItem>
+                                            <ComboBoxItem>2030</ComboBoxItem>
+                                            <ComboBoxItem>2031</ComboBoxItem>
+                                            <ComboBoxItem>2032</ComboBoxItem>
+                                            <ComboBoxItem>2033</ComboBoxItem>
+                                        </ComboBox>
+                                    </StackPanel>
+                                    <TextBox x:Name="txtProfileName_ARK" materialDesign:HintAssist.Hint="Profile Name" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0"/>
+                                    <ComboBox x:Name="cmbProfileName_ARK" materialDesign:HintAssist.Hint="Profile List" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0" SelectionChanged="cmbProfileName_ARK_SelectionChanged"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                                    <Button x:Name="btnImportProfile_ARK" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Height="35" BorderBrush="{x:Null}" BorderThickness="1" Click="btnImportProfile_ARK_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Import" Margin="0,2,3,0"/>
+                                            <TextBlock Text="Import Profile"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="btnCreateProfile_ARK" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" BorderBrush="{x:Null}" BorderThickness="1" Margin="20,0,0,0"  Height="35" Click="btnCreateProfile_ARK_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="AccountsAdd" Margin="0,2,3,0"/>
+                                            <TextBlock Text="Create Profile"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="btnDeleteProfile_ARK" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Height="35" BorderBrush="{x:Null}" BorderThickness="1" Click="btnDeleteProfile_ARK_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Delete" Margin="0,2,3,0"/>
+                                            <TextBlock Text="Delete Profile"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" x:Name="panCreateAccount_MCT" Visibility="Hidden">
+                                <StackPanel  Orientation="Vertical" Margin="60,0,0,0" >
+                                    <TextBlock Text="Add Profile(MCT)" Foreground="#99dddddd" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" FontFamily="Candara" />
+                                    <TextBox x:Name="txtEmailMCT" materialDesign:HintAssist.Hint="Email" Foreground="#dddddd" HorizontalAlignment="Left" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                        <TextBox x:Name="txtLastNameMCT" materialDesign:HintAssist.Hint="First Name(姓)" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True"/>
+                                        <TextBox x:Name="txtFirstNameMCT" materialDesign:HintAssist.Hint="Last Name(名)" Foreground="#dddddd" FontSize="14" Width="200" Margin="20,0,0,0" materialDesign:HintAssist.IsFloating="True"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                                        <TextBox x:Name="txtCompanyMCT" materialDesign:HintAssist.Hint="Company(会社 (任意))" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True"/>
+                                        <TextBox x:Name="txtPostalCodeMCT" materialDesign:HintAssist.Hint="Postal Code(郵便番号)" Foreground="#dddddd" FontSize="14" Width="200" HorizontalAlignment="Left" Margin="20,0,0,0" materialDesign:HintAssist.IsFloating="True"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <ComboBox x:Name="cmbPrefectureMCT" Margin="0,20,0,0" materialDesign:HintAssist.Hint="States(都道府県)" Width="200" FontSize="14" HorizontalAlignment="Left" Foreground="#dddddd" materialDesign:HintAssist.IsFloating="True">
+                                            <ComboBoxItem Content="北海道"/>
+                                            <ComboBoxItem Content="青森県"/>
+                                            <ComboBoxItem Content="秋田県"/>
+                                            <ComboBoxItem Content="岩手県"/>
+                                            <ComboBoxItem Content="宮城県"/>
+                                            <ComboBoxItem Content="山形県"/>
+                                            <ComboBoxItem Content="福島県"/>
+                                            <ComboBoxItem Content="茨城県"/>
+                                            <ComboBoxItem Content="栃木県"/>
+                                            <ComboBoxItem Content="群馬県"/>
+                                            <ComboBoxItem Content="埼玉県"/>
+                                            <ComboBoxItem Content="千葉県"/>
+                                            <ComboBoxItem Content="神奈川県"/>
+                                            <ComboBoxItem Content="東京都"/>
+                                            <ComboBoxItem Content="山梨県"/>
+                                            <ComboBoxItem Content="新潟県"/>
+                                            <ComboBoxItem Content="長野県"/>
+                                            <ComboBoxItem Content="静岡県"/>
+                                            <ComboBoxItem Content="愛知県"/>
+                                            <ComboBoxItem Content="三重県"/>
+                                            <ComboBoxItem Content="岐阜県"/>
+                                            <ComboBoxItem Content="富山県"/>
+                                            <ComboBoxItem Content="石川県"/>
+                                            <ComboBoxItem Content="福井県"/>
+                                            <ComboBoxItem Content="大阪府"/>
+                                            <ComboBoxItem Content="京都府"/>
+                                            <ComboBoxItem Content="滋賀県"/>
+                                            <ComboBoxItem Content="奈良県"/>
+                                            <ComboBoxItem Content="和歌山県"/>
+                                            <ComboBoxItem Content="兵庫県"/>
+                                            <ComboBoxItem Content="岡山県"/>
+                                            <ComboBoxItem Content="広島県"/>
+                                            <ComboBoxItem Content="山口県"/>
+                                            <ComboBoxItem Content="鳥取県"/>
+                                            <ComboBoxItem Content="島根県"/>
+                                            <ComboBoxItem Content="香川県"/>
+                                            <ComboBoxItem Content="徳島県"/>
+                                            <ComboBoxItem Content="愛媛県"/>
+                                            <ComboBoxItem Content="高知県"/>
+                                            <ComboBoxItem Content="福岡県"/>
+                                            <ComboBoxItem Content="佐賀県"/>
+                                            <ComboBoxItem Content="長崎県"/>
+                                            <ComboBoxItem Content="熊本県"/>
+                                            <ComboBoxItem Content="大分県"/>
+                                            <ComboBoxItem Content="宮崎県"/>
+                                            <ComboBoxItem Content="鹿児島県"/>
+                                            <ComboBoxItem Content="沖縄県"/>
+                                        </ComboBox>
+                                        <TextBox x:Name="txtCityMCT" materialDesign:HintAssist.Hint="City(市区町村)" Foreground="#dddddd" FontSize="14" Width="200" HorizontalAlignment="Left" Margin="20,20,0,0" materialDesign:HintAssist.IsFloating="True"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox x:Name="txtAddress1MCT" materialDesign:HintAssist.Hint="Address(住所)" Foreground="#dddddd" FontSize="14" Width="200" HorizontalAlignment="Left" Margin="0,20,0,0" materialDesign:HintAssist.IsFloating="True"/>
+                                        <TextBox x:Name="txtAddress2MCT" materialDesign:HintAssist.Hint="Building Name(建物名,部屋番号など(任意))" Foreground="#dddddd" FontSize="14" Width="200" HorizontalAlignment="Left" Margin="20,20,0,0" materialDesign:HintAssist.IsFloating="True"/>
+                                    </StackPanel>
+                                    <TextBox x:Name="txtphoneMCT" materialDesign:HintAssist.Hint="Phone(電話番号)" Foreground="#dddddd" FontSize="14" Width="200" HorizontalAlignment="Left" Margin="0,20,0,0" materialDesign:HintAssist.IsFloating="True"/>
+                                    <TextBox x:Name="txtprofileNameMCT" materialDesign:HintAssist.Hint="Profile Name" Foreground="#dddddd" FontSize="14" Width="200" HorizontalAlignment="Left" Margin="0,20,0,0" materialDesign:HintAssist.IsFloating="True"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical" Margin="50,5,0,0">
+                                    <ComboBox x:Name="cmbProfileCardTypeMCT" materialDesign:HintAssist.Hint="CardType" materialDesign:HintAssist.IsFloating="True"  Foreground="#dddddd" FontSize="14" Margin="0,20,0,0" Width="200"  HorizontalAlignment="Left" SelectedIndex="0">
+                                        <ComboBoxItem>Credit Card</ComboBoxItem>
+                                    </ComboBox>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox x:Name="txtCardNumberMCT" materialDesign:HintAssist.Hint="Card Number" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0"/>
+                                        <TextBox x:Name="txtCardNameMCT" materialDesign:HintAssist.Hint="Card Name" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="20,20,0,0"/>
+                                    </StackPanel>
+                                    <TextBox x:Name="txtCardSecurityMCT" materialDesign:HintAssist.Hint="Security Code" Foreground="#dddddd" FontSize="14" Width="100" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <ComboBox x:Name="cmbCardMonthMCT" materialDesign:HintAssist.Hint="Expire Month" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0">
+                                            <ComboBoxItem>1</ComboBoxItem>
+                                            <ComboBoxItem>2</ComboBoxItem>
+                                            <ComboBoxItem>3</ComboBoxItem>
+                                            <ComboBoxItem>4</ComboBoxItem>
+                                            <ComboBoxItem>5</ComboBoxItem>
+                                            <ComboBoxItem>6</ComboBoxItem>
+                                            <ComboBoxItem>7</ComboBoxItem>
+                                            <ComboBoxItem>8</ComboBoxItem>
+                                            <ComboBoxItem>9</ComboBoxItem>
+                                            <ComboBoxItem>10</ComboBoxItem>
+                                            <ComboBoxItem>11</ComboBoxItem>
+                                            <ComboBoxItem>12</ComboBoxItem>
+                                        </ComboBox>
+                                        <ComboBox x:Name="cmbCardYearMCT" materialDesign:HintAssist.Hint="Expire Year" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="20,20,0,0">
+                                            <ComboBoxItem>2020</ComboBoxItem>
+                                            <ComboBoxItem>2021</ComboBoxItem>
+                                            <ComboBoxItem>2022</ComboBoxItem>
+                                            <ComboBoxItem>2023</ComboBoxItem>
+                                            <ComboBoxItem>2024</ComboBoxItem>
+                                            <ComboBoxItem>2025</ComboBoxItem>
+                                            <ComboBoxItem>2026</ComboBoxItem>
+                                            <ComboBoxItem>2027</ComboBoxItem>
+                                            <ComboBoxItem>2028</ComboBoxItem>
+                                            <ComboBoxItem>2029</ComboBoxItem>
+                                            <ComboBoxItem>2030</ComboBoxItem>
+                                            <ComboBoxItem>2031</ComboBoxItem>
+                                            <ComboBoxItem>2032</ComboBoxItem>
+                                            <ComboBoxItem>2033</ComboBoxItem>
+                                        </ComboBox>
+                                    </StackPanel>
+                                    <ComboBox x:Name="cmbProfileNameMCT" materialDesign:HintAssist.Hint="Profile List" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0" SelectionChanged="cmbProfileNameMCT_SelectionChanged"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,40,0,0">
+                                        <Button x:Name="btnImportProfileMCT" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Height="35" BorderBrush="{x:Null}" BorderThickness="1" Click="btnImportProfileMCT_Click">
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="Import" Margin="0,2,3,0"/>
+                                                <TextBlock Text="Import Profile"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button x:Name="btnCreateProfileMCT" Style="{StaticResource MaterialDesignFlatAccentBgButton}"  Height="35" Foreground="Black" FontSize="14" Background="#00DEAB" BorderBrush="{x:Null}" BorderThickness="1" Margin="20,0,0,0" Click="btnCreateProfileMCT_Click">
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="AccountsAdd" Margin="0,2,3,0"/>
+                                                <TextBlock Text="Create Profile"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button x:Name="btnDeleteProfileMCT" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Height="35" BorderBrush="{x:Null}" BorderThickness="1" Click="btnDeleteProfileMCT_Click">
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="Delete" Margin="0,2,3,0"/>
+                                                <TextBlock Text="Delete Profile"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel x:Name="panCreateAccount_Mortar" Orientation="Vertical" Margin="20,0,0,0" Visibility="Hidden">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBox x:Name="txtLoginID_Mortar" materialDesign:HintAssist.Hint="Email" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True"/>
+                                    <TextBox x:Name="txtPassword_Mortar" materialDesign:HintAssist.Hint="Password" Foreground="#dddddd" FontSize="14" Width="200" Margin="20,0,0,0" materialDesign:HintAssist.IsFloating="True" />
+                                </StackPanel>
+                                <ComboBox x:Name="cmbProfileCardType_Mortar" materialDesign:HintAssist.Hint="CardType" materialDesign:HintAssist.IsFloating="True"  Foreground="#dddddd" FontSize="14" Margin="0,20,0,0" Width="200"  HorizontalAlignment="Left">
+                                    <ComboBoxItem>VISA</ComboBoxItem>
+                                    <ComboBoxItem>MasterCard</ComboBoxItem>
+                                    <ComboBoxItem>JCB</ComboBoxItem>
+                                    <ComboBoxItem>American Express</ComboBoxItem>
+                                </ComboBox>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBox x:Name="txtCardNumber_Mortar" materialDesign:HintAssist.Hint="Card Number" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0"/>
+                                    <TextBox x:Name="txtCardName_Mortar" materialDesign:HintAssist.Hint="Card Name" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="20,20,0,0"/>
+                                </StackPanel>
+                                <TextBox x:Name="txtCardSecurity_Mortar" materialDesign:HintAssist.Hint="Security Code" Foreground="#dddddd" FontSize="14" Width="100" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <ComboBox x:Name="cmbCardMonth_Mortar" materialDesign:HintAssist.Hint="Expire Month" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0">
+                                        <ComboBoxItem>01</ComboBoxItem>
+                                        <ComboBoxItem>02</ComboBoxItem>
+                                        <ComboBoxItem>03</ComboBoxItem>
+                                        <ComboBoxItem>04</ComboBoxItem>
+                                        <ComboBoxItem>05</ComboBoxItem>
+                                        <ComboBoxItem>06</ComboBoxItem>
+                                        <ComboBoxItem>07</ComboBoxItem>
+                                        <ComboBoxItem>08</ComboBoxItem>
+                                        <ComboBoxItem>09</ComboBoxItem>
+                                        <ComboBoxItem>10</ComboBoxItem>
+                                        <ComboBoxItem>11</ComboBoxItem>
+                                        <ComboBoxItem>12</ComboBoxItem>
+                                    </ComboBox>
+                                    <ComboBox x:Name="cmbCardYear_Mortar" materialDesign:HintAssist.Hint="Expire Year" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="20,20,0,0">
+                                        <ComboBoxItem>2020</ComboBoxItem>
+                                        <ComboBoxItem>2021</ComboBoxItem>
+                                        <ComboBoxItem>2022</ComboBoxItem>
+                                        <ComboBoxItem>2023</ComboBoxItem>
+                                        <ComboBoxItem>2024</ComboBoxItem>
+                                        <ComboBoxItem>2025</ComboBoxItem>
+                                        <ComboBoxItem>2026</ComboBoxItem>
+                                        <ComboBoxItem>2027</ComboBoxItem>
+                                        <ComboBoxItem>2028</ComboBoxItem>
+                                        <ComboBoxItem>2029</ComboBoxItem>
+                                        <ComboBoxItem>2030</ComboBoxItem>
+                                        <ComboBoxItem>2031</ComboBoxItem>
+                                        <ComboBoxItem>2032</ComboBoxItem>
+                                        <ComboBoxItem>2033</ComboBoxItem>
+                                    </ComboBox>
+                                </StackPanel>
+                                <TextBox x:Name="txtProfileName_Mortar" materialDesign:HintAssist.Hint="Profile Name" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0"/>
+                                <ComboBox x:Name="cmbProfileName_Mortar" materialDesign:HintAssist.Hint="Profile List" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0" SelectionChanged="cmbProfileName_Mortar_SelectionChanged"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                                    <Button x:Name="btnImportProfile_Mortar" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Height="35" BorderBrush="{x:Null}" BorderThickness="1" Click="btnImportProfile_Mortar_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Import" Margin="0,2,3,0"/>
+                                            <TextBlock Text="Import Profile"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="btnCreateProfile_Mortar" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" BorderBrush="{x:Null}" BorderThickness="1" Margin="20,0,0,0"  Height="35" Click="btnCreateProfile_Mortar_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="AccountsAdd" Margin="0,2,3,0"/>
+                                            <TextBlock Text="Create Profile"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="btnDeleteProfile_Mortar" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Height="35"  BorderBrush="{x:Null}" BorderThickness="1" Click="btnDeleteProfile_Mortar_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Delete" Margin="0,2,3,0"/>
+                                            <TextBlock Text="Delete Profile"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel x:Name="panCreateAccount_Zingaro" Orientation="Horizontal" Margin="20,0,0,0" Visibility="Hidden">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="Zingaro Profile Creater" Foreground="#dddddd" FontSize="16" Margin="0,10,0,0"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox x:Name="txtLoginID_Zingaro" materialDesign:HintAssist.Hint="Email" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" TextChanged="txtLoginID_TextChanged"/>
+                                        <TextBox x:Name="txtPassword_Zingaro" materialDesign:HintAssist.Hint="Password" Foreground="#dddddd" FontSize="14" Width="200" Margin="20,0,0,0" materialDesign:HintAssist.IsFloating="True" TextChanged="txtPassword_TextChanged"/>
+                                    </StackPanel>
+                                    <TextBox x:Name="txtProfileName_Zingaro" materialDesign:HintAssist.Hint="Profile Name" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0"/>
+                                    <ComboBox x:Name="cmbProfileName_Zingaro" materialDesign:HintAssist.Hint="Profile List" Foreground="#dddddd" FontSize="14" Width="200" materialDesign:HintAssist.IsFloating="True" HorizontalAlignment="Left" Margin="0,20,0,0" SelectionChanged="cmbProfileName_Zingaro_SelectionChanged"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                                    <!--<Button x:Name="btnImportProfile_Zingaro" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Height="35" BorderBrush="{x:Null}" BorderThickness="1" Click="btnImportProfile_Zingaro_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Import" Margin="0,2,3,0"/>
+                                            <TextBlock Text="Import Profile"/>
+                                        </StackPanel>
+                                    </Button>-->
+                                    <Button x:Name="btnCreateProfile_Zingaro" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" BorderBrush="{x:Null}" BorderThickness="1" Margin="20,0,0,0"  Height="35" Click="btnCreateProfile_Zingaro_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="AccountsAdd" Margin="0,2,3,0"/>
+                                            <TextBlock Text="Create Profile"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="btnDeleteProfile_Zingaro" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Foreground="Black" FontSize="14" Background="#00DEAB" Margin="20,0,0,0" Height="35" BorderBrush="{x:Null}" BorderThickness="1" Click="btnDeleteProfile_Zingaro_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Delete" Margin="0,2,3,0"/>
+                                            <TextBlock Text="Delete Profile"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+        <StackPanel x:Name="panProxy" Margin="0,50,0,0" Visibility="Hidden">
+            <Grid Width="1200" Height="640">
+                <Rectangle Fill="#1B2A49" RadiusX="5" RadiusY="5" Stroke="#121223" StrokeThickness="1"/>
+                <StackPanel Orientation="Vertical">
+                    <Grid Width="1200" Height="40">
+                        <Rectangle Fill="#0F1525"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <materialDesign:PackIcon Kind="SelectGroup"  Foreground="#dddddddd" VerticalAlignment="Center" Margin="0,0,3,0"/>
+                            <TextBlock x:Name="labProxyPanelName" Text="Proxy Group" Foreground="#dddddddd" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontFamily="Candara"/>
+                        </StackPanel>
+                    </Grid>
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <Grid>
+                            <Rectangle Fill="#1E263D" RadiusX="5" RadiusY="5" Margin="20,20,20,-20" Width="560"/>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock x:Name="labGroupList" Text="GROUP LIST" FontSize="13" Foreground="#dddddd" Margin="30,30,0,0" FontWeight="Bold"/>
+                                <StackPanel Orientation="Horizontal" Height="25" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0">
+                                    <Grid Width="50">
+                                        <Rectangle RadiusX="3" RadiusY="3" Fill="#0F1525"/>
+                                        <materialDesign:PackIcon Kind="CheckboxBlank" Foreground="#eeeeee" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Grid>
+                                    <Grid Width="70" Margin="5,0,0,0">
+                                        <Rectangle RadiusX="3" RadiusY="3" Fill="#0F1525"/>
+                                        <TextBlock Text="ID" Foreground="#dddddd" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontFamily="Candara"/>
+                                    </Grid>
+                                    <Grid Width="150" Margin="5,0,0,0">
+                                        <Rectangle RadiusX="3" RadiusY="3" Fill="#0F1525"/>
+                                        <TextBlock x:Name="labGroupName"  Text="GROUP NAME" Foreground="#dddddd" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontFamily="Candara"/>
+                                    </Grid>
+                                    <Grid Width="100" Margin="5,0,0,0">
+                                        <Rectangle RadiusX="3" RadiusY="3" Fill="#0F1525"/>
+                                        <TextBlock x:Name="labProxyCounts" Text="PROXY COUNTS" Foreground="#dddddd" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontFamily="Candara"/>
+                                    </Grid>
+                                    <Grid Width="75" Margin="5,0,0,0">
+                                        <Rectangle RadiusX="3" RadiusY="3" Fill="#0F1525"/>
+                                        <TextBlock x:Name="labGroupAction" Text="ACTION" Foreground="#dddddd" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontFamily="Candara"/>
+                                    </Grid>
+                                </StackPanel>
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" CanContentScroll="True" Style="{StaticResource MaterialDesignScrollViewer}">
+                                    <StackPanel x:Name="proxy_wrap_panel" Margin="0,5,0,0" Width="465" Height="410" CanVerticallyScroll="True" HorizontalAlignment="Center" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                    </StackPanel>
+                                </ScrollViewer>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button x:Name="clear_proxy_group_btn" Width="200" Height="30" Foreground="Black" Background="#00DEAB" Margin="20,0,0,0" Click="clear_proxy_group_btn_Click" BorderBrush="{x:Null}" BorderThickness="1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Clear" Margin="0,2,0,0"/>
+                                            <TextBlock x:Name="labClearGroup" Text="CLEAR ALL GROUP"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                        <Grid>
+                            <Rectangle Fill="#1E263D" RadiusX="5" RadiusY="5" Margin="20,20,20,-20" Width="560"/>
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="0,30,0,0">
+                                <TextBlock x:Name="labProxyList" Text="PROXY LIST" FontSize="13" Foreground="#dddddd" FontWeight="Bold"/>
+                                <StackPanel Orientation="Horizontal" Height="25" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0">
+                                    <Grid Width="50">
+                                        <Rectangle RadiusX="3" RadiusY="3" Fill="#0F1525"/>
+                                        <TextBlock Grid.Column="0" Text="NO" Foreground="#dddddd"  FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontFamily="Candara"/>
+                                    </Grid>
+                                    <Grid Width="250" Margin="5,0,0,0">
+                                        <Rectangle RadiusX="3" RadiusY="3" Fill="#0F1525"/>
+                                        <TextBlock x:Name="labEditProxy"  Grid.Column="1" Text="PROXY" Foreground="#dddddd"  FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontFamily="Candara"/>
+                                    </Grid>
+                                    <Grid Width="100" Margin="5,0,0,0">
+                                        <Rectangle RadiusX="3" RadiusY="3" Fill="#0F1525"/>
+                                        <TextBlock x:Name="labEditProxyStatus" Grid.Column="2" Text="STATUS" Foreground="#dddddd"  FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontFamily="Candara"/>
+                                    </Grid>
+                                    <Grid Width="50" Margin="5,0,0,0">
+                                        <Rectangle RadiusX="3" RadiusY="3" Fill="#0F1525"/>
+                                        <TextBlock x:Name="labEditProxyAction" Grid.Column="3" Text="ACTION" Foreground="#dddddd"  FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontFamily="Candara"/>
+                                    </Grid>
+                                </StackPanel>
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" CanContentScroll="True" Style="{StaticResource MaterialDesignScrollViewer}">
+                                    <StackPanel x:Name="Edit_Proxy_Group_panel" Width="470" Height="310" CanVerticallyScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="5,5,0,0">
+                                    </StackPanel>
+                                </ScrollViewer>
+
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,30,0,0">
+                                    <TextBox x:Name="proxy_group_name_input" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" materialDesign:HintAssist.Hint="Proxy Group Name" Foreground="White" FontSize="14" Width="150" materialDesign:HintAssist.Background="#0F1525" />
+                                    <Grid Margin="30,0,0,0">
+                                        <Rectangle Fill="#0F1525" RadiusX="4" RadiusY="4" Width="150"/>
+                                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
+                                            <TextBlock x:Name="lab_proxycount" Text="Proxy Count :" Foreground="#00dd00" VerticalAlignment="Center" FontSize="14"/>
+                                            <TextBlock x:Name="proxy_count_show" Foreground="White" VerticalAlignment="Center" FontSize="14" Width="20" Margin="5,0,0,0"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                                    <Button x:Name="testproxy_btn" FontSize="13" Width="100" Foreground="Black" Height="30" Background="#00DEAB" Click="testproxy_btn_Click" BorderBrush="{x:Null}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="CheckNetwork"  Width="12" Height="12" Margin="0,3,0,0"/>
+                                            <TextBlock x:Name="labProxyTest" Text="Test" Margin="4,0,0,0"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="addproxy_btn" FontSize="13" Width="100" Margin="10,0,0,0" Foreground="Black" Height="30" Background="#00DEAB" Click="addproxy_btn_Click" BorderBrush="{x:Null}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Add" Width="12" Height="12" Margin="0,3,0,0"/>
+                                            <TextBlock x:Name="labProxyAdd" Text="Add" Margin="4,0,0,0"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="clearproxy_btn" FontSize="13" Width="100" Margin="10,0,0,0" Height="30" Background="#00DEAB" Click="clearproxy_btn_Click" BorderBrush="White" Foreground="Black">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <materialDesign:PackIcon Kind="Clear" Width="12" Height="12" Margin="0,3,0,0"/>
+                                            <TextBlock x:Name="labProxyClear" Text="Clear" Margin="4,0,0,0"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="saveproxy_btn" FontSize="13" Width="100" Margin="10,0,0,0" Height="30" Background="#00DEAB" Click="saveproxy_btn_Click" BorderBrush="{x:Null}" Foreground="Black">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="ContentSaveAll" Width="12" Height="12" Margin="0,4,0,0"/>
+                                            <TextBlock x:Name="labProxySave" Text="Save" Margin="4,0,0,0"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+        <StackPanel x:Name="panSetting" Margin="0,50,0,0" Visibility="Hidden" >
+            <Grid Width="1200" Height="640">
+                <Rectangle Fill="#1B2A49" RadiusX="5" RadiusY="5" Stroke="#121223" StrokeThickness="1"/>
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical">
+                        <Grid Width="1200" Height="40">
+                            <Rectangle Fill="#0F1525"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <materialDesign:PackIcon Kind="SettingsOutline"  Foreground="#dddddddd" VerticalAlignment="Center" Margin="0,0,3,0"/>
+                                <TextBlock x:Name="labSettingPanel" Text="Settings Panel" Foreground="#dddddddd" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontFamily="Candara"/>
+                            </StackPanel>
+                        </Grid>
+                        <StackPanel Orientation="Horizontal" Margin="30,30,0,0">
+                            <StackPanel Orientation="Vertical">
+                                <GroupBox x:Name="groupwebhook" Header="WebHook" FontWeight="Bold" FontSize="14" >
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBox x:Name="txtwebhook" Width="300" Height="160" Foreground="#dddddd" TextChanged="txtwebhook_TextChanged" TextWrapping="Wrap"/>
+                                        <Button x:Name="btnTestWebhook" Width="200" Margin="0,10,0,0" Click="btnTestWebhook_Click" Background="#00DEAB" Foreground="Black" BorderBrush="{x:Null}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="Webhook" Margin="0,2,3,0"/>
+                                                <TextBlock x:Name="txtTestWebhook" Text="Test Webhook"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                </GroupBox>
+                                <GroupBox x:Name="groupSoundSetting" Header="Sound Setting" Margin="0,40,0,0" Width="400"  FontWeight="Bold" FontSize="14">
+                                    <StackPanel Orientation="Vertical">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <CheckBox x:Name="chkbackmusic" VerticalAlignment="Bottom" Height="30" Width="30" Click="chkbackmusic_Click"/>
+                                            <ComboBox x:Name="cmbBackGroundSound" Margin="0,10,0,0"  Foreground="#dddddd" materialDesign:HintAssist.IsFloating="True" Width="250" SelectionChanged="cmbBackGroundSound_SelectionChanged">
+                                                <materialDesign:HintAssist.Hint>
+                                                    <TextBlock Text="BackGround Music"/>
+                                                </materialDesign:HintAssist.Hint>
+                                            </ComboBox>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <CheckBox x:Name="chksucsound" VerticalAlignment="Bottom" Height="30" Width="30" Click="chksucsound_Click"/>
+                                            <ComboBox x:Name="cmbSuccessSound" Margin="0,10,0,0" Foreground="#dddddd" materialDesign:HintAssist.IsFloating="True" Width="250" SelectionChanged="cmbSuccessSound_SelectionChanged">
+                                                <materialDesign:HintAssist.Hint>
+                                                    <TextBlock Text="Success Sound"/>
+                                                </materialDesign:HintAssist.Hint>
+                                            </ComboBox>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,30">
+                                            <CheckBox x:Name="chkwarnsnd" VerticalAlignment="Bottom" Height="30" Width="30" Click="chkwarnsnd_Click"/>
+                                            <ComboBox x:Name="cmbWarningSound" Margin="0,10,0,0"  Foreground="#dddddd" materialDesign:HintAssist.IsFloating="True" Width="250" SelectionChanged="cmbWarningSound_SelectionChanged">
+                                                <materialDesign:HintAssist.Hint>
+                                                    <TextBlock Text="Warning Sound"/>
+                                                </materialDesign:HintAssist.Hint>
+                                            </ComboBox>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </GroupBox>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+        <StackPanel x:Name="FootPanel" Orientation="Vertical" VerticalAlignment="Bottom" Margin="0,0,0,10" >
+            <Line Width="800" Fill="White" Stroke="White" Height="5" X2="800" Y2="0" StrokeThickness="1"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
+                <TextBlock x:Name="labRefreshTime" Width="80" Text="Refresh Time:" Foreground="White" VerticalAlignment="Center" />
+                <TextBox x:Name="txtRetryInterval" Width="60" Height="40" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" Margin="5,0,0,0" Foreground="White" Padding="0,0,0,0" Text="500" FontSize="12" TextChanged="txtRetryInterval_TextChanged"/>
+                <TextBlock x:Name="labRetryingLimit" Width="90" Text="Retrying Limits:" Foreground="White"  VerticalAlignment="Center" Margin="20,0,0,0"/>
+                <TextBox x:Name="txtRetryCount" Width="60" Height="40" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" Margin="5,0,0,0" Foreground="White" Padding="0,0,0,0" Text="5" FontSize="12" TextChanged="txtRetryCount_TextChanged"/>
+                <TextBlock x:Name="labSleepTime" Width="70" Text="Sleep time:" Foreground="White" VerticalAlignment="Center" Margin="20,0,0,0"/>
+                <TextBox x:Name="txtOrderSleepTime" Width="60" Height="40" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" Margin="5,0,0,0" Foreground="White" Padding="0,0,0,0" Text="300" FontSize="12" TextChanged="txtOrderSleepTime_TextChanged"/>
+                <TextBlock x:Name="labGA" Width="70" Text="GA Token:" Foreground="White" VerticalAlignment="Center" Margin="20,0,0,0"/>
+                <TextBox x:Name="txtGA" Width="360" Height="40" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" Margin="5,0,0,0" Foreground="White" Padding="0,0,0,0" FontSize="12" TextChanged="txtGA_TextChanged" />
+            </StackPanel>
+        </StackPanel>
+        <local:VolumeControl x:Name="cntVolume" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,40,10,0" Visibility="Hidden"/>
+    </Grid>
+</Window>

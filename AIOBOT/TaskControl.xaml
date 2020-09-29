@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="AIOBOT.TaskControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AIOBOT"
+             mc:Ignorable="d" 
+             d:DesignHeight="35" d:DesignWidth="1250"
+             Width="1250"
+             Height="35"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" MouseLeave="UserControl_MouseLeave" MouseEnter="UserControl_MouseEnter" MouseDown="UserControl_MouseDown" Loaded="UserControl_Loaded" Margin="0,3,0,3">
+    <Grid>
+        <Rectangle Fill="#0F1525" RadiusX="7" RadiusY="7"/>
+        <Grid VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="54" />
+                <ColumnDefinition Width="74" />
+                <ColumnDefinition Width="104" />
+                <ColumnDefinition Width="84" />
+                <ColumnDefinition Width="84" />
+                <ColumnDefinition Width="124" />
+                <ColumnDefinition Width="154" />
+                <ColumnDefinition Width="254"/>
+                <ColumnDefinition Width="135"/>
+                <ColumnDefinition Width="180" />
+            </Grid.ColumnDefinitions>
+            <CheckBox x:Name="task_edit_checked" Style="{StaticResource MaterialDesignUserForegroundCheckBox}" Foreground="#dddddd" FontSize="16" Margin="0,0,0,0" Click="task_edit_checked_Click" Height="22" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Label x:Name="id_label" Grid.Column="1" Foreground="#dddddd" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Label x:Name="store_label" Grid.Column="2" Foreground="#dddddd" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <Label x:Name="size_label" Grid.Column="3" Foreground="#dddddd" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Label x:Name="style_label" Grid.Column="4" Foreground="#dddddd" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Label x:Name="profile_label" Grid.Column="5" Foreground="#dddddd" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Label x:Name="proxy_label" Grid.Column="6" Foreground="#dddddd" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock x:Name="product_label" Grid.Column="7" Foreground="#dddddd"  HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center"/>
+            <Label x:Name="status_label" Grid.Column="8" Foreground="#dddddd" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Grid Grid.Column="9" >
+                <Rectangle RadiusX="4" RadiusY="4" Fill="#1E263D" Width="160"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button x:Name="bot_start_btn" Style="{StaticResource MaterialDesignFloatingActionButton}" Height="Auto" Width="24" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#DD08FF2A" Click="bot_start_btn_Click" >
+                        <materialDesign:PackIcon Kind="Play" HorizontalAlignment="Center" Width="24" Height="24"/>
+                    </Button>
+                    <Button x:Name="bot_stop_btn" Style="{StaticResource MaterialDesignFloatingActionButton}" Height="24" Width="24" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#ff0000" Click="bot_stop_btn_Click">
+                        <materialDesign:PackIcon Kind="Stop" HorizontalAlignment="Center" Width="24" Height="24"/>
+                    </Button>
+                    <Button x:Name="edit_btn" Style="{StaticResource MaterialDesignFloatingActionButton}" Height="24" Width="24" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#dddddd" Click="edit_btn_Click">
+                        <materialDesign:PackIcon Kind="FileEdit" HorizontalAlignment="Center" Width="18" Height="18"/>
+                    </Button>
+                    <Button x:Name="remove_btn" Style="{StaticResource MaterialDesignFloatingActionButton}" Height="24" Width="24" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#ff0000" Click="remove_btn_Click">
+                        <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center" Width="20" Height="20"/>
+                    </Button>
+                    <Grid Margin="2,4,2,4">
+                        <materialDesign:PackIcon Kind="Account" HorizontalAlignment="Center" Width="22" Height="22" x:Name="status_logout" Foreground="Red"/>
+                        <materialDesign:PackIcon Kind="Account" HorizontalAlignment="Center" Width="22" Height="22" x:Name="status_logoin" Foreground="#12EE12" Visibility="Hidden"/>
+                    </Grid>
+                    <Button x:Name="bot_log_btn" Style="{StaticResource MaterialDesignFloatingActionButton}" Height="24" Width="24" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#DD08FF2A" Visibility="Visible" Click="bot_log_btn_Click" >
+                        <materialDesign:PackIcon Kind="Show" HorizontalAlignment="Center" Width="20" Height="20"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Token Generater</title>
+  </head>
+
+  <body>
+    <script src="https://p01.mul-pay.jp/ext/js/token.js"></script>
+    <script src="https://js.stripe.com/v2/"></script>
+    <!-- <script src="https://token.ccps.jp/UpcTokenPaymentMini.js"></script> -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
+
+    <div class="container text-center">
+      <h3 style="margin-top: 30px;">AIOBOTJP Mortar(Token 1)</h3>
+      <br />
+      <div>
+        <p>Token validation time is 30 minutes.</p>
+        <br />
+        <div class="container text-center">
+          <button
+            class="btn btn-sm btn-primary"
+            style="margin: 10px; width: 40%;"
+            onclick="getValues()"
+          >
+            Generate Token1
+          </button>
+        </div>
+        <input type="hidden" id="gmo_value" />
+        <input type="hidden" id="stripe_value" />
+      </div>
+    </div>
+    <script>
+      function getValues() {
+        var tokens = "";
+        Multipayment.init("1104267000001"),
+          (window.pgMulPayTokenPaymentCallback = function (e) {
+            document.getElementById("gmo_value").value =
+              e.tokenObject.token[0] +
+              ";" +
+              e.tokenObject.token[1] +
+              ";" +
+              e.tokenObject.maskedCardNo;
+          });
+        e = {
+          number: "111111",
+          expirationYear: "222222",
+          expirationMonth: "333333",
+          securityCode: "444444",
+          name: "555555",
+        };
+        expMonth = ("00" + String(e.expirationMonth)).slice(-2);
+        expYear = ("00" + String(e.expirationYear)).slice(-2);
+        holderName = e.name
+          .replace(/[^-.,/\s\dA-Z]/gi, "")
+          .trim()
+          .slice(0, 50);
+        gmoParams = {
+          cardno: e.number,
+          expire: expYear + expMonth,
+          securitycode: e.securityCode,
+          holdername: holderName,
+          tokennumber: "2",
+        };
+        Multipayment.getToken(gmoParams, "pgMulPayTokenPaymentCallback");
+
+        //stripe
+        Stripe.setPublishableKey("pk_live_BKDAgVq8LhhpThV2fFPALDbj");
+        stripeParams = {
+          number: e.number,
+          cvc: e.securityCode,
+          exp_month: e.expirationMonth,
+          exp_year: e.expirationYear,
+        };
+        Stripe.card.createToken(stripeParams, function (status, response) {
+          document.getElementById("stripe_value").value =
+            response.id +
+            ";" +
+            response.card.country +
+            ";" +
+            response.card.brand;
+        });
+      }
+    </script>
+  </body>
+</html>
